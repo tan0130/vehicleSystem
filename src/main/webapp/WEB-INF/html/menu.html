@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--浏览器兼容-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--适应不同设备-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css"/>
+    <script src="../../resources/js/jquery.min.js"></script>
+    <script src="../../resources/js/bootstrap.min.js"></script>
+    <style>
+        html{
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+<!--添加标题-->
+<!--<div class="container">-->
+<div class="alert alert-info">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div>
+                <div class="input-group" style="margin-left:35%">
+                    <span class="input-group-addon">车架号</span>
+                    <input type="text" id="vin" class="form-control" style="width:25%" placeholder="请输入车架号">
+                    <span><button type="button" class="btn btn-primary" style="margin-left:4%" onclick="watchData()">监控</button></span>
+                    <span id="currentTime" style="margin-top:2%;float:right"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- </div>-->
+
+<!--添加选项卡-->
+<!--<div class="container">-->
+<div class="row clearfix">
+    <div class="col-md-12 column">
+        <div class="tabbable" id="tabs-363150">
+            <ul class="nav nav-tabs" id="tabs">
+                <!--添加选项卡-->
+                <li class="active">
+                    <a href="#panel-vehicledata" data-toggle="tab">整车数据</a>
+                </li>
+                <li>
+                    <a href="#panel-motordata" data-toggle="tab">电机数据</a>
+                </li>
+                <li>
+                    <a href="#panel-locationdata" data-toggle="tab">定位数据</a>
+                </li>
+                <li>
+                    <a href="#panel-extremedata" data-toggle="tab">极值数据</a>
+                </li>
+                <li>
+                    <a href="#panel-alertdata" data-toggle="tab">报警数据</a>
+                </li>
+                <li>
+                    <a href="#panel-statedata" data-toggle="tab">状态数据</a>
+                </li>
+                <!--<li>
+                     <a href="#panel-searchdata" data-toggle="tab">报文查询</a>
+                </li>-->
+            </ul>
+            <div class="tab-content">
+                <!--整车数据-->
+                <div class="tab-pane active" id="panel-vehicledata">
+                    <div>
+                        <iframe id="vehicle" name="iframe1" src="" width="100%" height="550px" scrolling="no" frameborder="0"></iframe>
+                    </div>
+                </div>
+
+                <!--驱动电机-->
+                <div class="tab-pane" id="panel-motordata">
+                    <div>
+                        <iframe id="motor" name="iframe1" src="pages/motordata.html" width="100%" height="550px" scrolling="no" frameborder="0"></iframe>
+                    </div>
+                </div>
+
+                <!--定位数据-->
+                <div class="tab-pane" id="panel-locationdata">
+                    <div>
+                        <iframe id="location" name="iframe1" src="pages/locationdata.html" width="100%" height="550px" scrolling="no" frameborder="0"></iframe>
+                    </div>
+                </div>
+
+                <!--极值数据-->
+                <div class="tab-pane" id="panel-extremedata">
+                    <div>
+                        <iframe id="extreme" name="iframe1" src="pages/extremedata.html" width="100%" height="550px" scrolling="no" frameborder="0"></iframe>
+                    </div>
+                </div>
+
+                <!--报警数据-->
+                <div class="tab-pane" id="panel-alertdata">
+                    <div>
+                        <iframe id="alert" name="iframe1" src="pages/alertdata.html" width="100%" height="550px" scrolling="no" frameborder="0"></iframe>
+                    </div>
+                </div>
+
+                <!--状态数据-->
+                <div class="tab-pane" id="panel-statedata">
+                    <div>
+                        <iframe id="state" name="iframe1" src="pages/statedata.html" width="100%" height="550px" scrolling="no" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>-->
+<script>
+    document.getElementById("vin").value = "";
+
+    // 用于验证车架号的合法性
+    function watchData() {
+        var vin = document.getElementById("vin").value;
+        // 正则表达式验证车架号输入的合法性
+        var reg = "^[A-Z][A-Z0-9]{16}";
+        if(vin == "") {
+            alert("车架号不能为空");
+        } else if(!vin.match(reg)) {
+            alert("请输入合法的车架号")
+        }
+    }<!--end function watchData()-->
+
+    <!--iframe自适应高度-->
+    /*function reinitIframe(){
+        var iframe = document.getElementById("iframe2");
+        try{
+        var bHeight = iframe.contentWindow.document.body.scrollHeight;
+        var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+        var height = Math.max(bHeight, dHeight);
+        iframe.height = height;
+        }catch (ex){}
+    }
+    window.setInterval("reinitIframe()", 0);*/
+
+    <!--重写时间格式-->
+    window.onload = setInterval(function() {
+        document.getElementById('currentTime').innerHTML = (new Date()).Format("yyyy-MM-dd hh:mm:ss");
+    },1000);
+    Date.prototype.Format = function (fmt) {
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+
+    <!--鼠标悬停，选中标签页-->
+    /*$(function() {
+        $('#tabs a').hover(function () {
+        $(this).tab('show');
+        });
+    });*/
+
+</script>
+
+</body>
+</html>

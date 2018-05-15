@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--浏览器兼容-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--适应不同设备-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../resources/css/bootstrap-table.min.css"/>
+    <link rel="stylesheet" href="../../resources/css/bootstrap-datetimepicker.min.css"/>
+    <link rel="stylesheet" href="../../resources/css/menu.css"/>
+    <script src="../../resources/js/jquery-1.11.2.min.js"></script>
+    <script src="../../resources/js/bootstrap.min.js"></script>
+    <script src="../../resources/js/bootstrap-table.min.js"></script>
+    <script src="../../resources/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="../../resources/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../../resources/js/bootstrap-table-export.js"></script>
+    <script src="../../resources/js/tableExport.js"></script>
+    <title></title>
+</head>
+
+<body>
+<div class="row clearfix">
+    <div class="col-md-12 column">
+        <div class="alert alert-info">
+            <div id="toolbar">
+                <!--添加搜索框-->
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <!--<span class="input-group-addon">车架号</span>-->
+                        <label for="vin">车架号:</label>
+                        <input type="text" class="form-control" style="width:75%" id="vin" placeholder="请输入车架号">
+                    </div>
+                    <div class="form-group">
+                        <label for="starttime">开始日期:</label>
+                        <input type="text" class="form-control" id="starttime" placeholder="请输入开始日期">
+                    </div>
+                    <div class="form-group">
+                        <label for="endtime">结束日期:</label>
+                        <input type="text" class="time-input form-control" id="endtime" placeholder="请输入结束日期">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="query()">搜索</button>
+                </form>
+            </div><!--end toolbar-->
+        </div><!--end alert info-->
+        <table class="table-hover table text-nowrap table-responsive" toolbar="#toolbar" id="tt">
+        </table>
+    </div> <!--end column-->
+</div><!--end row-->
+<script>
+    // 对输入框的内容进行清除
+    clear();
+    // 对输入框的值进行清空
+    function clear() {
+        document.getElementById("vin").value = "";
+        document.getElementById("starttime").value = "";
+        document.getElementById("endtime").value = "";
+    }
+
+    <!--重写datetimepicker-->
+    $.fn.datetimepicker.dates['zh-CN'] = {
+        days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+        daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+        daysMin:  ["日", "一", "二", "三", "四", "五", "六"],
+        months: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+        monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+        today: "今日",
+
+        suffix: [],
+        meridiem: ["am", "pm"],
+        weekStart: 7,
+    };
+
+    <!--加入datetimepicker-->
+    $('#starttime').datetimepicker({
+        format: "yyyy-MM-dd hh:ii:ss",
+        language:  'zh-CN',
+        todayBtn: true,
+        autoclose: true,
+    });
+    $('#endtime').datetimepicker({
+        format: "yyyy-MM-dd hh:ii:ss",
+        language:  'zh-CN',
+        todayBtn: true,
+        autoclose: true,
+    });
+
+    function query() {
+
+        var params = {};
+        var vin = $('#vin').val();
+        var starttime = $('#starttime').val();
+        //var starttime = document.getElementById("starttime");
+        var endtime = $('#endtime').val();
+        //console.log(starttime);
+        //console.log(endtime);
+        params.vin = vin;
+        //params.starttime = starttime;
+        //params.endtime = endtime;
+
+        // 对车架号进行输入验证
+        // 正则表达式验证车架号输入的合法性
+        var reg = "^[A-Z][A-Z0-9]{16}";
+        var regtime = "^[1-9]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\\s+(20|21|22|23|[0-1]\\d):[0-5]\\d:[0-5]\\d$";
+        if(vin == "") {
+            alert("车架号不能为空");
+        } else if(!vin.match(reg)) {
+            alert("请输入合法的车架号")
+        } else if(starttime == "") {
+            alert("开始时间不能为空");
+        } else if(!starttime.match(regtime)) {
+            alert("时间格式不正确");
+        } else if(endtime == "") {
+            alert("结束时间不能为空");
+        } else if(!endtime.match(regtime)) {
+            alert("时间格式不正确");
+        } else {
+            $.ajax({
+                url : "/map/searchData",
+                type : "GET",
+                async: false, // 是否异步传输，false为同步传输
+                dataType : "json",
+                //jsonp: "callback",
+                success : function(value) {
+
+                    var obj = [];
+                    $.each(value.rows, function(i, d) {
+
+                        obj.push(d);
+                        // alert(obj.coursename);
+                    });
+                    $('#tt').bootstrapTable({
+                        data: obj,
+                        queryParams: params, // 传入参数
+                        cache: false, // 禁止使用缓存
+                        height: 544, // 设置表格高度
+                        //showToggle:true, //显示切换按钮来切换表/卡片视图。
+                        //showPaginationSwitch:true, //显示数据条数选择框
+                        searchTimeOut: 500, // 搜索超时时间
+                        pagination: true, // 显示分页按钮
+                        paginationLoop: false,
+                        pageList: [10,20,30,,50,60,100],
+                        pageSize:10, // 每页初始条数
+                        showColumns: true, // 显示内容列下拉框
+                        //toolbar: "#toolbar", // 添加工具栏
+                        sortName: "codetime",
+                        silent: true,  // 刷新事件必须设置
+                        pageNumber:1,
+                        sideOagination: "client", // 分页方式：客户端
+                        //uniqueId: 'index', //将index列设为唯一索引
+                        striped: true, // 隔行变色
+                        search: true,
+                        responseHandler:function (res) {
+                            return res.data;
+                        },
+                        //showRefresh: true, // 显示刷新按钮
+                        minimumCountColumns: 2, // 最少允许的列数
+                        smartDisplay:true,
+                        showExport: true,  //是否显示导出按钮
+                        buttonsAlign:"right",  //按钮位置
+                        exportDataType: 'all', // 将所有数据导出
+                        exportTypes:['json', 'xml', 'csv', 'txt', 'sql', 'excel','pdf'],  //导出文件类型
+                        Icons:'glyphicon-export',
+                        columns:[
+                            [
+                                {title:"序号",formatter: function(value,row,index) {return index + 1}},
+                                {field:"vin",title:"车架号",width:"20%"},
+                                {field:"servertime",title:"服务器时间"},
+                                {field:"codetime",title:"报文时间"},
+                                {field:"codestyle",title:"类型"},
+                                {field:"codecheck",title:"校验"},
+                                {field:"codelength",title:"报文长度"},
+                                {field:"originalcode",title:"原始报文"}
+                            ]
+                        ]
+                    });
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>
