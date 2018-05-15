@@ -6,7 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="85854d32-3439-48d7-94d4-c15e909db3fa" name="Default" comment="spring+springmvc+mybatis&#10;百度地图监控">
+    <list default="true" id="85854d32-3439-48d7-94d4-c15e909db3fa" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/../vehicleSystem/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../vehicleSystem/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -105,8 +105,8 @@
       <file leaf-file-name="VehicleServiceImpl.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../vehicleSystem/src/main/java/vehicle/service/VehicleServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="17" column="34" lean-forward="true" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
+            <state relative-caret-position="317">
+              <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#251#252#0" expanded="true" />
@@ -556,7 +556,7 @@
       <option name="presentableId" value="Default" />
       <updated>1526288488975</updated>
       <workItem from="1526288494572" duration="4871000" />
-      <workItem from="1526354322065" duration="9389000" />
+      <workItem from="1526354322065" duration="9584000" />
     </task>
     <task id="LOCAL-00001" summary="spring+springmvc+mybatis&#10;百度地图监控">
       <created>1526378008129</created>
@@ -565,14 +565,21 @@
       <option name="project" value="LOCAL" />
       <updated>1526378008129</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="spring+springmvc+mybatis&#10;百度地图监控">
+      <created>1526378641701</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1526378641701</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14260000" />
+    <option name="totallyTimeSpent" value="14455000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1456" height="876" extended-state="7" />
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
@@ -892,8 +899,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../vehicleSystem/src/main/java/vehicle/service/VehicleServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="17" column="34" lean-forward="true" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
+        <state relative-caret-position="317">
+          <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#251#252#0" expanded="true" />
