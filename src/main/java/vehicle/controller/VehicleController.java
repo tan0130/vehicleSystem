@@ -68,7 +68,6 @@ public class VehicleController {
 
     @RequestMapping(value = "/toStatePage")
     public String toStatePage() {
-        System.out.println("跳转状态页面");
         return "page/stateData";
     }
 
