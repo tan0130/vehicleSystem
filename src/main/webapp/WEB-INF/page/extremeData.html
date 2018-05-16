@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--浏览器兼容-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--适应不同设备-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../resources/css/menu.css"/>
+    <script src="../../resources/js/jquery.min.js"></script>
+    <script src="../../resources/js/bootstrap.min.js"></script>
+    <title>无标题文档</title>
+</head>
+
+<body>
+<div class="alert alert-info">
+    <!--<button type="button" class="btn btn-primary" onclick="extreme()">监控</button>-->
+    <table class="table-hover table-responsive table-bordered menutable" id="locationdata">
+        <tr>
+            <td class="td-label">电池单体电压最高值</td>
+            <td class="td-content">包序号:<span id="e401"></span>,单体序号:<span id="e402"></span>,值:<span id="e403"></span>&nbsp;V</td>
+            <td class="td-label">电池单体电压最低值</td>
+            <td class="td-content">包序号:<span id="e404"></span>,单体序号:<span id="e405"></span>,值:<span id="e406"></span>&nbsp;V</td>
+        </tr>
+        <tr>
+            <td class="td-label">最高温度值</td>
+            <td class="td-content">包序号:<span id="e407"></span>,单体序号:<span id="e408"></span>,值:<span id="e409"></span>&nbsp;℃</td>
+            <td class="td-label">最低温度值</td>
+            <td class="td-content">包序号:<span id="e410"></span>,单体序号:<span id="e411"></span>,值:<span id="e412"></span>&nbsp;℃</td>
+        </tr>
+    </table>
+</div>
+<script>
+    extreme();
+    function extreme() {
+        var xhr;
+        if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
+            xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
+        }else if(window.XMLHttpRequest){
+            xhr = new XMLHttpRequest();
+        }
+        xhr.open('get','extremedata.json',true);
+        xhr.send(null);
+        xhr.onload = hanlder;
+    }
+    function hanlder(e) {
+        var xhr = e.target;
+        if(xhr.status == 200 || xhr.status == 304 || xhr.status == 0) {
+            var data = JSON.parse(xhr.responseText);
+            document.getElementById('e401').innerHTML = data.e01;
+            document.getElementById('e402').innerHTML = data.e02;
+            document.getElementById('e403').innerHTML = data.e03;
+            document.getElementById('e404').innerHTML = data.e04;
+            document.getElementById('e405').innerHTML = data.e05;
+            document.getElementById('e406').innerHTML = data.e06;
+            document.getElementById('e407').innerHTML = data.e07;
+            document.getElementById('e408').innerHTML = data.e08;
+            document.getElementById('e409').innerHTML = data.e09;
+            document.getElementById('e410').innerHTML = data.e10;
+            document.getElementById('e411').innerHTML = data.e11;
+            document.getElementById('e412').innerHTML = data.e12;
+
+            // 1秒后再次请求
+            setInterval(function() {
+                extreme();
+            },10000);
+        }
+    }
+</script>
+</body>
+</html>

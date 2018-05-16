@@ -83,7 +83,7 @@
     }<!--end function createMap-->
 
     // http数据请求接口,请求所有车辆的信息，向服务器查询所需要的数据
-    function requestAllData() {
+    /*function requestAllData() {
         var xhr;
         if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
             xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
@@ -93,7 +93,7 @@
         xhr.open('get','url',true);
         xhr.send(null);
         xhr.onload = hanlderAll;
-    }<!--end function requestData-->
+    }*/<!--end function requestData-->
 
     // 对接收的多辆车的数据进行处理
     function hanlderAll(e) {
@@ -106,7 +106,7 @@
     }<!--end function hanlderAll-->
 
     // http请求接口，向服务器请求单辆车辆信息
-    function requestOneData() {
+   /* function requestOneData() {
         var xhr;
         if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
             xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
@@ -116,17 +116,17 @@
         xhr.open('get','url',true);
         xhr.send(null);
         xhr.onload = hanlderOne;
-    }<!--end function requestOneData-->
+    }*/<!--end function requestOneData-->
 
     // 对接收到的单辆车辆信息进行解析
-    function hanlderOne(e) {
+    /*function hanlderOne(e) {
         var xhr = e.target;
         if(xhr.status == 200 || xhr.status == 304 || xhr.status == 0) {
             //var data = JSON.parse(xhr.responseText); // 对请求的数据进行解析
             // 进行相应的操作
             //queryOneVehicles(data1);
         }
-    }
+    }*/
 
     // 显示标注点的信息
     function showInfo(marker,point,local) {

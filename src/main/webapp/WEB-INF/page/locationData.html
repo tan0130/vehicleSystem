@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--浏览器兼容-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--适应不同设备-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../resources/css/menu.css"/>
+    <script src="../../resources/js/jquery.min.js"></script>
+    <script src="../../resources/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="alert alert-info">
+    <!--<button type="button" class="btn btn-primary" onclick="locate()">监控</button>-->
+    <table class="table-hover table-responsive table-bordered menutable" id="locationdata">
+        <tr>
+            <td class="td-label">GPS定位状态</td>
+            <td class="td-content" id="l01"></td>
+            <td class="td-label">经度</td>
+            <td class="td-content" id="l02"></td>
+        </tr>
+        <tr>
+            <td class="td-label">纬度</td>
+            <td class="td-content" id="l03"></td>
+            <td class="td-label">-</td>
+            <td class="td-content">--</td>
+        </tr>
+    </table>
+</div>
+<script>
+    locate();
+    function locate() {
+        var xhr;
+        if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
+            xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
+        }else if(window.XMLHttpRequest){
+            xhr = new XMLHttpRequest();
+        }
+        xhr.open('get','locationdata.json',true);
+        xhr.send(null);
+        xhr.onload = hanlder;
+    };
+    function hanlder(e) {
+        var xhr = e.target;
+        if(xhr.status == 200 || xhr.status == 304 || xhr.status == 0) {
+            var data = JSON.parse(xhr.responseText);
+            // 对应id获取data数据里面对应的数据项
+            document.getElementById('l01').innerHTML = data.l01;
+            document.getElementById('l02').innerHTML = data.l02;
+            document.getElementById('l03').innerHTML = data.l03;
+            // 1秒后再次请求
+            setInterval(function() {
+                locate();
+            },10000);
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--浏览器兼容-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--适应不同设备-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../resources/css/menu.css"/>
+    <script src="../../resources/js/jquery.min.js"></script>
+    <script src="../../resources/js/bootstrap.min.js"></script>
+    <title>无标题文档</title>
+</head>
+
+<body>
+<div class="alert alert-info">
+    <!--<button type="button" class="btn btn-primary" onclick="state()">监控</button>-->
+    <table class="table-hover table-responsive table-bordered menutable" id="statedata">
+        <tr>
+            <td class="td-label">终端登入流水号</td>
+            <td class="td-content"><span id="s601">-</span></td>
+            <td class="td-label">终端登出流水号</td>
+            <td class="td-content"><span id="s602">-</span></td>
+        </tr>
+        <tr>
+            <td class="td-label">终端登入时间</td>
+            <td class="td-content"><span id="s603">-</span></td>
+            <td class="td-label">终端登出时间</td>
+            <td class="td-content"><span id="s604">-</span></td>
+        </tr>
+        <tr>
+            <td class="td-label">ICCID</td>
+            <td class="td-content"><span id="s605">-</span></td>
+            <td class="td-label">-</td>
+            <td class="td-content"><span id="s606">--</span></td>
+        </tr>
+    </table>
+</div>
+<script>
+    state();
+    function state() {
+        var xhr;
+        if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
+            xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
+        }else if(window.XMLHttpRequest){
+            xhr = new XMLHttpRequest();
+        }
+        xhr.open('get','statedata.json',true);
+        xhr.send(null);
+        xhr.onload = hanlder;
+    }
+    function hanlder(e) {
+        var xhr = e.target;
+        if(xhr.status == 200 || xhr.status == 304 || xhr.status == 0) {
+            var data = JSON.parse(xhr.responseText);
+            document.getElementById('s601').innerHTML = data.incode;
+            document.getElementById('s602').innerHTML = data.outcode;
+            document.getElementById('s603').innerHTML = data.intime;
+            document.getElementById('s604').innerHTML = data.outtime;
+            document.getElementById('s605').innerHTML = data.iccid;
+
+            setInterval(function() {
+                state();
+            },10000);
+        }
+    }
+</script>
+</body>
+</html>

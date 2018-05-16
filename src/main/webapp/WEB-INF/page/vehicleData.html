@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--浏览器兼容-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--适应不同设备-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../resources/css/menu.css"/>
+    <script src="../../resources/js/jquery.min.js"></script>
+    <script src="../../resources/js/bootstrap.min.js"></script>
+    <title>无标题文档</title>
+</head>
+
+<body>
+<!--<button type="button" class="btn btn-primary" onclick="vehicle()">监控</button>-->
+<div class="alert alert-info">
+    <table class="table-hover table-responsive table-bordered menutable" id="vehicledata">
+        <tr>
+            <td class="td-label">车速</td>
+            <td class="td-content"><span id="v201">-</span>&nbsp;km/h</td>
+            <td class="td-label">制动踏板行程值</td>
+            <td class="td-content"><span id="v202">-</span>&nbsp;%</td>
+        </tr>
+        <tr>
+            <td class="td-label">里程</td>
+            <td class="td-content"><span id=v203>-</span>&nbsp;km</td>
+            <td class="td-label">加速踏板行程值</td>
+            <td class="td-content"><span id="v204">-</span>&nbsp;%</td>
+        </tr>
+        <tr>
+            <td class="td-label">档位</td>
+            <td class="td-content"><span id="v205">-</span></td>
+            <td class="td-label">运行模式</td>
+            <td class="td-content"><span id="v206">-</span></td>
+        </tr>
+        <tr>
+            <td class="td-label">制动状态</td>
+            <td class="td-content"><span id="v207">-</span></td>
+            <td class="td-label">驱动状态</td>
+            <td class="td-content"><span id="v208">-</span></td>
+        </tr>
+        <tr>
+            <td class="td-label">DC-DC状态</td>
+            <td class="td-content"><span id="v209">-</span></td>
+            <td class="td-label">车辆状态</td>
+            <td class="td-content"><span id="v210">-</span></td>
+        </tr>
+        <tr>
+            <td class="td-label">总电压</td>
+            <td class="td-content"><span id="v211">-</span>&nbsp;V</td>
+            <td class="td-label">总电流</td>
+            <td class="td-content"><span id="v212">-</span>&nbsp;A</td>
+        </tr>
+        <tr>
+            <td class="td-label">SOC</td>
+            <td class="td-content"><span id="v213">-</span>&nbsp;%</td>
+            <td class="td-label">正极对地电阻</td>
+            <td class="td-content"><span id="v214">-</span>&nbsp;Ω</td>
+        </tr>
+        <tr>
+            <td class="td-label">充电状态</td>
+            <td class="td-content"><span id="v215">-</span></td>
+            <td class="td-label">-</td>
+            <td class="td-content"><span id="v216">--</span></td>
+        </tr>
+    </table>
+</div>
+<script>
+    vehicle();
+
+    function vehicle() {
+        var xhr;
+        if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
+            xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
+        }else if(window.XMLHttpRequest){
+            xhr = new XMLHttpRequest();
+        }
+        xhr.open('get','vehicledata.json',true);
+        xhr.send(null);
+        xhr.onload = hanlder;
+    }
+    function hanlder(e) {
+        var xhr = e.target;
+        if(xhr.status == 200 || xhr.status == 304 || xhr.status == 0) {
+            var data = JSON.parse(xhr.responseText);
+            document.getElementById('v201').innerHTML = data.v01;
+            document.getElementById('v202').innerHTML = data.v02;
+            document.getElementById('v203').innerHTML = data.v03;
+            document.getElementById('v204').innerHTML = data.v04;
+            document.getElementById('v205').innerHTML = data.v05;
+            document.getElementById('v206').innerHTML = data.v06;
+            document.getElementById('v207').innerHTML = data.v07;
+            document.getElementById('v208').innerHTML = data.v08;
+            document.getElementById('v209').innerHTML = data.v09;
+            document.getElementById('v210').innerHTML = data.v10;
+            document.getElementById('v211').innerHTML = data.v11;
+            document.getElementById('v212').innerHTML = data.v12;
+            document.getElementById('v213').innerHTML = data.v13;
+            document.getElementById('v214').innerHTML = data.v14;
+            document.getElementById('v215').innerHTML = data.v15;
+
+            setInterval(function() {
+                vehicle();
+            },10000);
+        }
+    }
+</script>
+</body>
+</html>

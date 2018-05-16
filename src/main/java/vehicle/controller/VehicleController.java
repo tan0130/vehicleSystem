@@ -31,7 +31,7 @@ public class VehicleController {
         return "html/main";
     }
 
-    @RequestMapping(value = "toMainPage")
+    @RequestMapping(value = "/toMainPage")
     public String toMainPage() {
         return "html/map";
     }
@@ -46,17 +46,49 @@ public class VehicleController {
         return "html/search";
     }
 
+    @RequestMapping(value = "/toAlertPage")
+    public String toAlertPage() {
+        return "page/alertData";
+    }
+
+    @RequestMapping(value = "/toVehiclePage")
+    public String toVehiclePage() {
+        return "page/vehicleData";
+    }
+
+    @RequestMapping(value = "/toExtremePage")
+    public String toExtremePage() {
+        return "page/extremeData";
+    }
+
+    @RequestMapping(value = "/toLocationPage")
+    public String toLocationPage() {
+        return "page/locationData";
+    }
+
+    @RequestMapping(value = "/toStatePage")
+    public String toStatePage() {
+        System.out.println("跳转状态页面");
+        return "page/stateData";
+    }
+
+    @RequestMapping(value = "/toMotorPage")
+    public String toMotorPage() {
+        return "page/motorData";
+    }
     // 报文信息查询
     @RequestMapping(value = "/searchData", method = RequestMethod.GET)
     @ResponseBody
     public String searchData(String vin) {
         try {
+            System.out.println("车架号为：" + vin);
             List<Vehicle> vehicle = vehicleService.getDataByVin(vin);
             Map<String, Object> jsonMap = new HashMap<String, Object>();
             jsonMap.put("total", vehicle.size());
             jsonMap.put("rows", vehicle);
             ObjectMapper mapper = new ObjectMapper();
             String json = mapper.writeValueAsString(jsonMap);
+            System.out.println(json);
             return json;
         } catch(Exception e) {
             return "";

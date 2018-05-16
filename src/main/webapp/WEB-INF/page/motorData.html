@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--浏览器兼容-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--适应不同设备-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../resources/css/menu.css"/>
+    <script src="../../resources/js/jquery.min.js"></script>
+    <script src="../../resources/js/bootstrap.min.js"></script>
+    <title>无标题文档</title>
+</head>
+
+<body>
+<div class="alert alert-info">
+    <!--<button type="button" class="btn btn-primary" onclick="motor()">监控</button>-->
+    <table class="table-hover table-responsive table-bordered menutable" id="motordata">
+        <tr>
+            <td class="td-label">报文时间</td>
+            <td class="td-content" id="m01"></td>
+            <td class="td-label">数据有效性</td>
+            <td class="td-content" id="m02"></td>
+        </tr>
+        <tr>
+            <td class="td-label">驱动电机个数</td>
+            <td class="td-content" id="m03"></td>
+            <td class="td-label">-</td>
+            <td class="td-content" id="m04">--</td>
+        </tr>
+        <tr>
+            <td class="td-label">驱动电机序号1</td>
+            <td class="td-content" id="m05"></td>
+            <td class="td-label">驱动电机状态1</td>
+            <td class="td-content" id="m06"></td>
+        </tr>
+        <tr>
+            <td class="td-label">电机电压1</td>
+            <td class="td-content" id="m07"></td>
+            <td class="td-label">电机母线电流1</td>
+            <td class="td-content" id="m08"></td>
+        </tr>
+        <tr>
+            <td class="td-label">电机温度1</td>
+            <td class="td-content" id="m09"></td>
+            <td class="td-label">电机控制器温度1</td>
+            <td class="td-content" id="m10"></td>
+        </tr>
+        <tr>
+            <td class="td-label">电机转速1</td>
+            <td class="td-content" id="m11"></td>
+            <td class="td-label">电机转矩1</td>
+            <td class="td-content" id="m12"></td>
+        </tr>
+        <tr>
+            <td class="td-label">驱动电机序号2</td>
+            <td class="td-content" id="m13"></td>
+            <td class="td-label">驱动电机状态2</td>
+            <td class="td-content" id="m14"></td>
+        </tr>
+        <tr>
+            <td class="td-label">电机电压2</td>
+            <td class="td-content" id="m15"></td>
+            <td class="td-label">电机母线电流2</td>
+            <td class="td-content" id="m16"></td>
+        </tr>
+        <tr>
+            <td class="td-label">电机温度2</td>
+            <td class="td-content" id="m17"></td>
+            <td class="td-label">电机控制器温度2</td>
+            <td class="td-content" id="m18"></td>
+        </tr>
+        <tr>
+            <td class="td-label">电机转速1</td>
+            <td class="td-content" id="m19"></td>
+            <td class="td-label">电机转矩1</td>
+            <td class="td-content" id="m20"></td>
+        </tr>
+    </table>
+</div>
+<script>
+    motor();
+    function motor() {
+        var xhr;
+        if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
+            xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
+        }else if(window.XMLHttpRequest){
+            xhr = new XMLHttpRequest();
+        }
+        xhr.open('get','motordata.json',true);
+        xhr.send(null);
+        xhr.onload = hanlder;
+    };
+    function hanlder(e) {
+        var xhr = e.target;
+        if(xhr.status == 200 || xhr.status == 304 || xhr.status == 0) {
+            var data = JSON.parse(xhr.responseText);
+            // 对应id获取data数据里面对应的数据项
+            document.getElementById('m01').innerHTML = data.m01;
+            document.getElementById('m02').innerHTML = data.m02;
+            document.getElementById('m03').innerHTML = data.m03;
+            document.getElementById('m04').innerHTML = data.m04;
+            document.getElementById('m05').innerHTML = data.m05;
+            document.getElementById('m06').innerHTML = data.m06;
+            document.getElementById('m07').innerHTML = data.m07;
+            document.getElementById('m08').innerHTML = data.m08;
+            document.getElementById('m09').innerHTML = data.m09;
+            document.getElementById('m10').innerHTML = data.m10;
+            document.getElementById('m11').innerHTML = data.m11;
+            document.getElementById('m12').innerHTML = data.m12;
+            document.getElementById('m13').innerHTML = data.m13;
+            document.getElementById('m14').innerHTML = data.m14;
+            document.getElementById('m15').innerHTML = data.m15;
+            document.getElementById('m16').innerHTML = data.m16;
+            document.getElementById('m17').innerHTML = data.m17;
+            document.getElementById('m18').innerHTML = data.m18;
+            document.getElementById('m19').innerHTML = data.m19;
+            document.getElementById('m20').innerHTML = data.m20;
+            // 1秒后再次请求
+            setInterval(function() {
+                motor();
+            },10000);
+        }
+    }
+</script>
+</body>
+</html>

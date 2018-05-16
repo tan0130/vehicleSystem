@@ -11,7 +11,7 @@ import java.util.List;
  * create by tan on 2018/5/15
  * 报文查询操作业务逻辑层接口实现
  **/
-@Service
+@Service("VehicleService")
 public class VehicleServiceImpl implements VehicleService{
 
     @Autowired
