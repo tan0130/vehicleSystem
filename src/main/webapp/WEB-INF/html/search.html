@@ -90,24 +90,20 @@
         var temp = {
             vin: $('#vin').val(),
             starttime: $('#starttime').val(),
-            endtime: $('#endtime').val()
+            endtime: $('#endtime').val(),
+
+            // 使用后端分页，需传入的参数
+            /*offset: params.pageSize,
+            limit: params.pageNumber*/
         };
-        console.log(vin);
         return temp;
     }
 
     function query() {
-        //var params = {};
         var vin = $('#vin').val();
         var starttime = $('#starttime').val();
-        //var starttime = document.getElementById("starttime");
         var endtime = $('#endtime').val();
-        //console.log(starttime);
-        //console.log(endtime);
-        /*params.vin = vin;
-        params.starttime = starttime;
-        params.endtime = endtime;*/
-        //console.log(vin);
+
         // 对车架号进行输入验证
         // 正则表达式验证车架号输入的合法性
         var reg = "^[A-Z][A-Z0-9]{16}";
@@ -125,76 +121,61 @@
         } else if(!endtime.match(regtime)) {
             alert("时间格式不正确");
         } else {
-            /*$.ajax({
-                type : "GET",
-                async: false, // 是否异步传输，false为同步传输
-                cache: false,
-                url : "/map/searchData",*/
-                /*data: {
-                    vin: vin
+            $('#tt').bootstrapTable({
+                url:'/map/searchData',
+                type: 'get',
+                queryParams: queryParams, // 传入参数
+                //queryParamsType: "limit", //参数格式,发送标准的RESTFul类型的参数请求
+                cache: false, // 禁止使用缓存
+                height: 544, // 设置表格高度
+                //showToggle:true, //显示切换按钮来切换表/卡片视图。
+                //showPaginationSwitch:true, //显示数据条数选择框
+                searchTimeOut: 500, // 搜索超时时间
+                pagination: true, // 显示分页按钮
+                paginationLoop: false,
+                pageList: [10,20,30,50,60,100],
+                pageSize:10, // 每页初始条数
+                showColumns: true, // 显示内容列下拉框
+                //toolbar: "#toolbar", // 添加工具栏
+                //sortName: "codetime",
+                silent: true,  // 刷新事件必须设置
+                formatLoadingMessage: function () {
+                    return "请稍等，正在加载中...";
+                },
+                formatNoMatches: function () {  //没有匹配的结果
+                    return '无符合条件的记录';
+                },
+                pageNumber:1,
+                sideOagination: "client", // 分页方式：客户端 后台只需返回数组形式的json数据
+                //sidePagination: "server", // 设置为服务端分页,需要total和rows
+                //uniqueId: 'index', //将index列设为唯一索引
+                striped: true, // 隔行变色
+                search: true,
+                minimumCountColumns: 2, // 最少允许的列数
+                smartDisplay:true,
+                showExport: true,  //是否显示导出按钮
+                buttonsAlign:"right",  //按钮位置
+                exportDataType: 'all', // 将所有数据导出
+                exportTypes:['json', 'xml', 'csv', 'txt', 'sql', 'excel','pdf'],  //导出文件类型
+                Icons:'glyphicon-export',
+                /*responseHandler:function (res) {
+                    return res.DATA;
                 },*/
-                //dataType : "json",
-                //jsonp: "callback",
-                /*success : function(value) {
-
-                    var obj = [];
-                    $.each(value.rows, function(i, d) {
-
-                        obj.push(d);
-                        // alert(obj.coursename);
-                    });*/
-                    $('#tt').bootstrapTable({
-                       // data: obj,
-                        url:'/map/searchData',
-                        queryParams: queryParams, // 传入参数
-                        queryParamsType: "limit", //参数格式,发送标准的RESTFul类型的参数请求
-                        cache: false, // 禁止使用缓存
-                        height: 544, // 设置表格高度
-                        //showToggle:true, //显示切换按钮来切换表/卡片视图。
-                        //showPaginationSwitch:true, //显示数据条数选择框
-                        searchTimeOut: 500, // 搜索超时时间
-                        pagination: true, // 显示分页按钮
-                        paginationLoop: false,
-                        pageList: [10,20,30,,50,60,100],
-                        pageSize:10, // 每页初始条数
-                        showColumns: true, // 显示内容列下拉框
-                        //toolbar: "#toolbar", // 添加工具栏
-                        //sortName: "codetime",
-                        silent: true,  // 刷新事件必须设置
-                        formatLoadingMessage: function () {
-                            return "请稍等，正在加载中...";
-                        },
-                        formatNoMatches: function () {  //没有匹配的结果
-                            return '无符合条件的记录';
-                        },
-                        pageNumber:1,
-                        sideOagination: "client", // 分页方式：客户端
-                        //uniqueId: 'index', //将index列设为唯一索引
-                        striped: true, // 隔行变色
-                        search: true,
-                        minimumCountColumns: 2, // 最少允许的列数
-                        smartDisplay:true,
-                        showExport: true,  //是否显示导出按钮
-                        buttonsAlign:"right",  //按钮位置
-                        exportDataType: 'all', // 将所有数据导出
-                        exportTypes:['json', 'xml', 'csv', 'txt', 'sql', 'excel','pdf'],  //导出文件类型
-                        Icons:'glyphicon-export',
-                        columns:[
-                            [{title:"序号",formatter: function(value,row,index) {return index + 1}},
-                                {field:"id",title:"编号",width:"20%"},
-                                {field:"vin",title:"车架号",width:"20%"},
-                                {field:"servertime",title:"服务器时间"},
-                                {field:"codetime",title:"报文时间"},
-                                {field:"codetype",title:"类型"},
-                                {field:"codecheck",title:"校验"},
-                                {field:"codelength",title:"报文长度"},
-                                {field:"origincode",title:"原始报文"}
-                            ]
-                        ]
-                    });
-                }
-            /*});
-        }*/
+                columns:[
+                    [{title:"序号",formatter: function(value,row,index) {return index + 1}},
+                        {field:"vin",title:"车架号",width:"20%"},
+                        {field:"servertime",title:"服务器时间"},
+                        {field:"codetime",title:"报文时间"},
+                        {field:"codetype",title:"类型"},
+                        {field:"codecheck",title:"校验"},
+                        {field:"codelength",title:"报文长度"},
+                        {field:"origincode",title:"原始报文"}
+                    ]
+                ]
+            });
+            }
+        /*}
+        return oTableInit;*/
     }
 </script>
 </body>

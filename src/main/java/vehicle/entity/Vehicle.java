@@ -100,8 +100,7 @@ public class Vehicle {
     @Override
     public String toString() {
         return "Vehicle{" +
-                "id=" + id +
-                ", vin='" + vin + '\'' +
+               "vin='" + vin + '\'' +
                 ", servertime='" + servertime + '\'' +
                 ", codetime='" + codetime + '\'' +
                 ", codetype='" + codetype + '\'' +

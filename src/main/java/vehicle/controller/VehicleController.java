@@ -76,18 +76,16 @@ public class VehicleController {
         return "page/motorData";
     }
     // 报文信息查询
-    @RequestMapping(value = "/searchData", method = RequestMethod.GET)
+    @RequestMapping(value = "/searchData", produces = "application/json; charset=utf-8", method = RequestMethod.GET)
     @ResponseBody
     public String searchData(String vin) {
         try {
-            System.out.println("车架号为：" + vin);
             List<Vehicle> vehicle = vehicleService.getDataByVin(vin);
             Map<String, Object> jsonMap = new HashMap<String, Object>();
             jsonMap.put("total", vehicle.size());
             jsonMap.put("rows", vehicle);
             ObjectMapper mapper = new ObjectMapper();
-            String json = mapper.writeValueAsString(jsonMap);
-            System.out.println(json);
+            String json = mapper.writeValueAsString(vehicle);
             return json;
         } catch(Exception e) {
             return "";
