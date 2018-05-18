@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper通过命名空间的名称来搜索userMapeper接口,接口的方法名和id名称一致，然后执行相应的sql语句进行相应的操作 -->
+<mapper namespace = "vehicle.dao.UserDAO">
+    <!-- 获取所有报文信息 -->
+    <select id = "getUserById" parameterType="int" resultType="vehicle.entity.User">
+		select * from user where id=#{id};
+	</select>
+
+    <!-- 根据id查询报文信息 -->
+    <select id = "getDataByIdAndPwd" parameterType = "vehicle.entity.User" resultType = "vehicle.entity.User">
+		select * from user where vin = #{arg0} and password = #{arg1};
+	</select>
+</mapper>

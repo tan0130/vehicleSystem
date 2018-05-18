@@ -26,10 +26,10 @@ public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
 
-    @RequestMapping(value = "/toMain")
+    /*@RequestMapping(value = "/toMain")
     public String toMain() {
         return "html/main";
-    }
+    }*/
 
     @RequestMapping(value = "/toMainPage")
     public String toMainPage() {
