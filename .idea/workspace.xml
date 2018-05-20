@@ -8,6 +8,7 @@
   <component name="ChangeListManager">
     <list default="true" id="85854d32-3439-48d7-94d4-c15e909db3fa" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/../vehicleSystem/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../vehicleSystem/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vehicleSystem/src/main/webapp/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/../vehicleSystem/src/main/webapp/login.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -23,8 +24,8 @@
       <file leaf-file-name="login.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../vehicleSystem/src/main/webapp/login.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="157">
-              <caret line="120" column="27" selection-start-line="120" selection-start-column="27" selection-end-line="120" selection-end-column="27" />
+            <state relative-caret-position="207">
+              <caret line="122" column="20" selection-start-line="122" selection-start-column="20" selection-end-line="122" selection-end-column="20" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -531,7 +532,7 @@
       <workItem from="1526449536419" duration="19090000" />
       <workItem from="1526546197569" duration="151000" />
       <workItem from="1526546395183" duration="2232000" />
-      <workItem from="1526604091920" duration="15154000" />
+      <workItem from="1526604091920" duration="15305000" />
     </task>
     <task id="LOCAL-00001" summary="spring+springmvc+mybatis&#10;百度地图监控">
       <created>1526378008129</created>
@@ -603,18 +604,25 @@
       <option name="project" value="LOCAL" />
       <updated>1526637613267</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="加入登录界面，未调试通过">
+      <created>1526784078567</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1526784078567</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60543000" />
+    <option name="totallyTimeSpent" value="60694000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="7" sideWeight="0.5007236" side_tool="true" visible="true" weight="0.5014045" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5007236" side_tool="true" visible="true" weight="0.5014045" />
       <window_info anchor="bottom" id="Application Servers" order="7" weight="0.3286517" />
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
@@ -635,7 +643,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3272472" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.43117976" />
       <window_info anchor="bottom" id="Spring" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.4992764" visible="true" weight="0.5014045" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.4992764" visible="true" weight="0.5014045" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27496383" />
       <window_info id="Web" order="2" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="3" />
@@ -1139,8 +1147,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../vehicleSystem/src/main/webapp/login.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="120" column="27" selection-start-line="120" selection-start-column="27" selection-end-line="120" selection-end-column="27" />
+        <state relative-caret-position="207">
+          <caret line="122" column="20" selection-start-line="122" selection-start-column="20" selection-end-line="122" selection-end-column="20" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
