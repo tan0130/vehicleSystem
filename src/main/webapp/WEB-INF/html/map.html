@@ -47,14 +47,14 @@
 <!--百度地图容器-->
 <div style="width:100%;height:600px;border:#ccc solid 1px;font-size:12px" id="map"></div>
 <script type="text/javascript">
-    var data = [{vin:"LA95C86H9G1LC0001",state:"离线",longitude:114.376667,latitude:22.683645},
+   /* var data = [{vin:"LA95C86H9G1LC0001",state:"离线",longitude:114.376667,latitude:22.683645},
         {vin:"LA95C86H9G1LC0002",state:"离线",longitude:114.366667,latitude:22.683645},
         {vin:"LA95C86H9G1LC0003",state:"在线",longitude:114.356686,latitude:22.683645},
         {vin:"LA95C86H9G1LC0004",state:"在线",longitude:114.346686,latitude:22.683645},
         {vin:"LA95C86H9G1LC0005",state:"在线",longitude:114.336686,latitude:22.683645},
         {vin:"LA95C86H9G1LC0006",state:"离线",longitude:114.326686,latitude:22.683645},
         {vin:"LA95C86H9G1LC0007",state:"离线",longitude:114.316686,latitude:22.683645},
-        {vin:"LA95C86H9G1LC0008",state:"离线",longitude:114.306667,latitude:22.683645}];
+        {vin:"LA95C86H9G1LC0008",state:"离线",longitude:114.306667,latitude:22.683645}];*/
     //var data1 = [{state:"在线",longitude:120.356686,latitude:22.683645}];
 
     var map;
@@ -72,7 +72,7 @@
         //addMapOverlay(); // 向地图添加覆盖物
         clear(); // 清空输入框的信息
         //requestData(); // 从服务器请求数据，并相应的操作
-        queryAllVehicles(data); // 部署项目前测试函数
+        queryAllVehicles(); // 部署项目前测试函数
     }<!--end function initMap-->
 
     // 创建地图
@@ -82,51 +82,6 @@
         map.centerAndZoom(point,14); // 初始化地图，设置中心点坐标和地图级别
     }<!--end function createMap-->
 
-    // http数据请求接口,请求所有车辆的信息，向服务器查询所需要的数据
-    /*function requestAllData() {
-        var xhr;
-        if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
-            xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
-        }else if(window.XMLHttpRequest){
-            xhr = new XMLHttpRequest();
-        }
-        xhr.open('get','url',true);
-        xhr.send(null);
-        xhr.onload = hanlderAll;
-    }*/<!--end function requestData-->
-
-    // 对接收的多辆车的数据进行处理
-    function hanlderAll(e) {
-        var xhr = e.target;
-        if(xhr.status == 200 || xhr.status == 304 || xhr.status == 0) {
-            //var data = JSON.parse(xhr.responseText); // 对请求的数据进行解析
-            // 进行相应的操作
-            //queryAllVehicles(data);
-        }
-    }<!--end function hanlderAll-->
-
-    // http请求接口，向服务器请求单辆车辆信息
-   /* function requestOneData() {
-        var xhr;
-        if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
-            xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
-        }else if(window.XMLHttpRequest){
-            xhr = new XMLHttpRequest();
-        }
-        xhr.open('get','url',true);
-        xhr.send(null);
-        xhr.onload = hanlderOne;
-    }*/<!--end function requestOneData-->
-
-    // 对接收到的单辆车辆信息进行解析
-    /*function hanlderOne(e) {
-        var xhr = e.target;
-        if(xhr.status == 200 || xhr.status == 304 || xhr.status == 0) {
-            //var data = JSON.parse(xhr.responseText); // 对请求的数据进行解析
-            // 进行相应的操作
-            //queryOneVehicles(data1);
-        }
-    }*/
 
     // 显示标注点的信息
     function showInfo(marker,point,local) {
@@ -136,24 +91,45 @@
         marker.openInfoWindow(infoWindow);   //图片加载完毕重绘infowindow
     }<!--end function showInfo-->
 
+
+    function queryAllVehicles() {
+        $.ajax({
+            type: 'get',
+            async: false,
+            cache: false,
+            url: 'http://10.14.131.7/GuobiaoTest/servlet/GetVehicle',
+            dataType: 'jsonp',
+            jsopnCallback: 'jsonpCallback',
+            success: function(data) {
+                handler(data); // data 已经是 object 对象了
+            }
+        })
+    }
+
     // 查询所有车辆信息，服务器返回经纬度及车辆状态信息，然后标注在地图上，并显示相关信息
-    function queryAllVehicles(data) {
+    function handler(data) {
+        var obj = [];
+        $.each(data.rows,function(i,d){
+            obj.push(d);
+        })
+
+
         clear();
         if (marker)
             map.removeOverlay(marker); // 清除原来的标志
         var item,vin,state,lng,lat;
-        var titalNum = 0; // 车辆总数计数器
+        var totalNum = 0; // 车辆总数计数器
         var onLineNum = 0; // 在线车辆计数器
         var offLineNum = 0; // 离线车辆计数器
         var points = [];
 
-        for(var i = 0; i < data.length; i++) {
-            item = data[i];
+        for(var i = 0; i < obj.length; i++) {
+            item = obj[i];
             vin = item.vin;
             state = item.state;
             lng = item.longitude;
             lat = item.latitude;
-            totalNum = data.length;
+            totalNum = obj.length;
             if(state == "在线") {
                 onLineNum++;
             }
@@ -169,7 +145,7 @@
             var infoWindow = "";
 
             (function(){
-                var thePoint = data[i];
+                var thePoint = obj[i];
                 // 获取当前地理位置
                 var local;
                 // 鼠标悬停标注，显示标签信息
@@ -197,38 +173,57 @@
     }<!--end function queryAllVehicles-->
 
     //通过查询车架号，服务器返回经纬度及车辆状态信息，然后标注在地图上，并显示相关信息
+
     function queryOneVehicle() {
+        var vinCode = $('#vin').val();
+        $.ajax({
+            type: 'get',
+            async: false,
+            cache: false,
+            url: 'http://10.14.131.7/GuobiaoTest/servlet/GetAllVehicles',
+            data: {
+                vin: vinCode
+            },
+            dataType: 'jsonp',
+            jsopnCallback: 'jsonpCallback',
+            success: function(data) {
+                handlerOne(data); // data 已经是 object 对象了
+            }
+        })
+    }
+
+
+    function handlerOne(data) {
         // 获取输入框的值
-        var vin = document.getElementById("vin").value;
+        var vinCode = document.getElementById("vin").value;
         // 正则表达式验证车架号输入的合法性
         var reg = "^[A-Z][A-Z0-9]{16}";
-        if(vin == "") {
+        if(vinCode == "") {
             alert("车架号不能为空");
-        } else if(!vin.match(reg)) {
+        } else if(!vinCode.match(reg)) {
             alert("请输入合法的车架号")
         } else {
             if (marker) {
                 map.removeOverlay(marker); // 清除原来的标志
             }
-            var ietm,state,lng,lat;
+            var item,state,lng,lat;
             var totalNum = 0;
             var onLineNum = 0;
             var offLineNum = 0;
 
-            var data1 = [{state:"在线",longitude:120.356686,latitude:22.683645}];
-            if(data1.length == "") {
+            //var data1 = [{state:"在线",longitude:120.356686,latitude:22.683645}];
+            if(data.vin == "") {
                 alert("车辆未录入监控系统");
             } else {
-                for(var i in data1) {
-                    item = data1[i];
-                    state = item.state;
+                //for(var i in data1) {
+                    state = data.state;
                     if(state == "在线")
                         onLineNum++;
                     if(state == "离线")
                         offLineNum++;
-                    totalNum = data1.length;
-                    lng = item.longitude;
-                    lat = item.latitude;
+                    totalNum = onLineNum + offLineNum;
+                    lng = data.longitude;
+                    lat = data.latitude;
 
                     var locPoint = new BMap.Point(lng, lat);
 
@@ -247,13 +242,16 @@
                         marker.addEventListener("mouseover", function () { this.openInfoWindow(infoWindow); });
                         marker.addEventListener("mouseout",function(e){
                             //this.closeInfoWindow(infoWindow);
-                            queryAllVehicles(data);
+                            queryAllVehicles();
                         });
                         marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
                     });
                 }
-            }
+            //}
         }
+        document.getElementById("totalNum").value = totalNum; // 在输入框显示获取到的车辆总数
+        document.getElementById("onLineNum").value = onLineNum;
+        document.getElementById("offLineNum").value = offLineNum;
     }<!--end function queryOneVehicle-->
 
     // 设置地图事件

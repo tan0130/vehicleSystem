@@ -67,44 +67,46 @@
         </tr>
     </table>
 </div>
-<script>
+<script type="text/javascript">
     vehicle();
 
     function vehicle() {
-        var xhr;
-        if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
-            xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
-        }else if(window.XMLHttpRequest){
-            xhr = new XMLHttpRequest();
-        }
-        xhr.open('get','vehicledata.json',true);
-        xhr.send(null);
-        xhr.onload = hanlder;
+        var vinCode = window.parent.document.getElementById("vin").value;
+        $.ajax({
+            type: 'get',
+            async: false,
+            cache: false,
+            url: 'http://10.14.131.7/GuobiaoTest/servlet/GetVehicle',
+            data: {
+                vin: vinCode
+            },
+            dataType: 'jsonp',
+            jsopnCallback: 'jsonpCallback',
+            success: function(data) {
+                handler(data); // data 已经是 object 对象了
+            }
+        })
     }
-    function hanlder(e) {
-        var xhr = e.target;
-        if(xhr.status == 200 || xhr.status == 304 || xhr.status == 0) {
-            var data = JSON.parse(xhr.responseText);
-            document.getElementById('v201').innerHTML = data.v01;
-            document.getElementById('v202').innerHTML = data.v02;
-            document.getElementById('v203').innerHTML = data.v03;
-            document.getElementById('v204').innerHTML = data.v04;
-            document.getElementById('v205').innerHTML = data.v05;
-            document.getElementById('v206').innerHTML = data.v06;
-            document.getElementById('v207').innerHTML = data.v07;
-            document.getElementById('v208').innerHTML = data.v08;
-            document.getElementById('v209').innerHTML = data.v09;
-            document.getElementById('v210').innerHTML = data.v10;
-            document.getElementById('v211').innerHTML = data.v11;
-            document.getElementById('v212').innerHTML = data.v12;
-            document.getElementById('v213').innerHTML = data.v13;
-            document.getElementById('v214').innerHTML = data.v14;
-            document.getElementById('v215').innerHTML = data.v15;
+    function handler(data) {
+        document.getElementById('v201').innerHTML = data.v01;
+        document.getElementById('v202').innerHTML = data.v02;
+        document.getElementById('v203').innerHTML = data.v03;
+        document.getElementById('v204').innerHTML = data.v04;
+        document.getElementById('v205').innerHTML = data.v05;
+        document.getElementById('v206').innerHTML = data.v06;
+        document.getElementById('v207').innerHTML = data.v07;
+        document.getElementById('v208').innerHTML = data.v08;
+        document.getElementById('v209').innerHTML = data.v09;
+        document.getElementById('v210').innerHTML = data.v10;
+        document.getElementById('v211').innerHTML = data.v11;
+        document.getElementById('v212').innerHTML = data.v12;
+        document.getElementById('v213').innerHTML = data.v13;
+        document.getElementById('v214').innerHTML = data.v14;
+        document.getElementById('v215').innerHTML = data.v15;
 
-            setInterval(function() {
-                vehicle();
-            },10000);
-        }
+        setInterval(function() {
+            vehicle();
+        },100000);
     }
 </script>
 </body>

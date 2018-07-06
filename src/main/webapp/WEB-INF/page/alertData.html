@@ -6,11 +6,11 @@
     <!--适应不同设备-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/resources/css/bootstrap.min.css"/>
     <!--<link rel="stylesheet" href="../../css/bootstrap-responsive.min.css"/>-->
-    <link rel="stylesheet" href="../../resources/css/menu.css"/>
-    <script src="../../resources/js/jquery.min.js"></script>
-    <script src="../../resources/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/resources/css/menu.css"/>
+    <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resources/js/bootstrap.min.js"></script>
     <title>无标题文档</title>
 </head>
 
@@ -80,10 +80,10 @@
         </tr>
     </table>
 </div>
-<script>
+<script type="text/javascript">
     alertData();
     function alertData() {
-        var xhr;
+        /*var xhr;
         if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
             xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
         }else if(window.XMLHttpRequest){
@@ -91,38 +91,49 @@
         }
         xhr.open('get','alertdata.json',true);
         xhr.send(null);
-        xhr.onload = hanlder;
-    };
-    function hanlder(e) {
-        var xhr = e.target;
-        if(xhr.status == 200 || xhr.status == 304 || xhr.status == 0) {
-            var data = JSON.parse(xhr.responseText);
-            // 对应id获取data数据里面对应的数据项
-            document.getElementById('a501').innerHTML = data.a01;
-            document.getElementById('a502').innerHTML = data.a02;
-            document.getElementById('a503').innerHTML = data.a03;
-            document.getElementById('a504').innerHTML = data.a04;
-            document.getElementById('a505').innerHTML = data.a05;
-            document.getElementById('a506').innerHTML = data.a06;
-            document.getElementById('a507').innerHTML = data.a07;
-            document.getElementById('a508').innerHTML = data.a08;
-            document.getElementById('a509').innerHTML = data.a09;
-            document.getElementById('a510').innerHTML = data.a10;
-            document.getElementById('a511').innerHTML = data.a11;
-            document.getElementById('a512').innerHTML = data.a12;
-            document.getElementById('a513').innerHTML = data.a13;
-            document.getElementById('a514').innerHTML = data.a14;
-            document.getElementById('a515').innerHTML = data.a15;
-            document.getElementById('a516').innerHTML = data.a16;
-            document.getElementById('a517').innerHTML = data.a17;
-            document.getElementById('a518').innerHTML = data.a18;
-            document.getElementById('a519').innerHTML = data.a19;
+        xhr.onload = hanlder;*/
+        var vinCode = window.parent.document.getElementById("vin").value;
+        $.ajax({
+            type: 'get',
+            async: false,
+            cache: false,
+            url: 'http://10.14.131.7/GuobiaoTest/servlet/GetAlert',
+            data: {
+                vin: vinCode
+            },
+            dataType: 'jsonp',
+            jsopnCallback: 'jsonpCallback',
+            success: function(data) {
+                handler(data); // data 已经是 object 对象了
+            }
+        })
+    }
+    function handler(data) {
+        // 对应id获取data数据里面对应的数据项
+        document.getElementById('a501').innerHTML = data.a01;
+        document.getElementById('a502').innerHTML = data.a02;
+        document.getElementById('a503').innerHTML = data.a03;
+        document.getElementById('a504').innerHTML = data.a04;
+        document.getElementById('a505').innerHTML = data.a05;
+        document.getElementById('a506').innerHTML = data.a06;
+        document.getElementById('a507').innerHTML = data.a07;
+        document.getElementById('a508').innerHTML = data.a08;
+        document.getElementById('a509').innerHTML = data.a09;
+        document.getElementById('a510').innerHTML = data.a10;
+        document.getElementById('a511').innerHTML = data.a11;
+        document.getElementById('a512').innerHTML = data.a12;
+        document.getElementById('a513').innerHTML = data.a13;
+        document.getElementById('a514').innerHTML = data.a14;
+        document.getElementById('a515').innerHTML = data.a15;
+        document.getElementById('a516').innerHTML = data.a16;
+        document.getElementById('a517').innerHTML = data.a17;
+        document.getElementById('a518').innerHTML = data.a18;
+        document.getElementById('a519').innerHTML = data.a19;
 
-            // 1秒后再次请求
-            setInterval(function() {
-                alertData();
-            },10000);
-        }
+        // 1秒后再次请求
+        setInterval(function() {
+            alertData();
+        },100000);
     }
 </script>
 </body>

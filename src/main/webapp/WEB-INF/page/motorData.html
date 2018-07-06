@@ -79,49 +79,52 @@
         </tr>
     </table>
 </div>
-<script>
+<script type="text/javascript">
     motor();
     function motor() {
-        var xhr;
-        if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
-            xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
-        }else if(window.XMLHttpRequest){
-            xhr = new XMLHttpRequest();
-        }
-        xhr.open('get','motordata.json',true);
-        xhr.send(null);
-        xhr.onload = hanlder;
-    };
-    function hanlder(e) {
-        var xhr = e.target;
-        if(xhr.status == 200 || xhr.status == 304 || xhr.status == 0) {
-            var data = JSON.parse(xhr.responseText);
-            // 对应id获取data数据里面对应的数据项
-            document.getElementById('m01').innerHTML = data.m01;
-            document.getElementById('m02').innerHTML = data.m02;
-            document.getElementById('m03').innerHTML = data.m03;
-            document.getElementById('m04').innerHTML = data.m04;
-            document.getElementById('m05').innerHTML = data.m05;
-            document.getElementById('m06').innerHTML = data.m06;
-            document.getElementById('m07').innerHTML = data.m07;
-            document.getElementById('m08').innerHTML = data.m08;
-            document.getElementById('m09').innerHTML = data.m09;
-            document.getElementById('m10').innerHTML = data.m10;
-            document.getElementById('m11').innerHTML = data.m11;
-            document.getElementById('m12').innerHTML = data.m12;
-            document.getElementById('m13').innerHTML = data.m13;
-            document.getElementById('m14').innerHTML = data.m14;
-            document.getElementById('m15').innerHTML = data.m15;
-            document.getElementById('m16').innerHTML = data.m16;
-            document.getElementById('m17').innerHTML = data.m17;
-            document.getElementById('m18').innerHTML = data.m18;
-            document.getElementById('m19').innerHTML = data.m19;
-            document.getElementById('m20').innerHTML = data.m20;
-            // 1秒后再次请求
-            setInterval(function() {
-                motor();
-            },10000);
-        }
+        var vinCode = window.parent.document.getElementById("vin").value;
+        $.ajax({
+            type: 'get',
+            async: false,
+            cache: false,
+            url: 'http://10.14.131.7/GuobiaoTest/servlet/GetMotor',
+            data: {
+                vin: vinCode
+            },
+            dataType: 'jsonp',
+            jsopnCallback: 'jsonpCallback',
+            success: function(data) {
+                handler(data); // data 已经是 object 对象了
+            }
+        })
+
+    }
+    function handler(data) { var xhr = e.target;
+        // 对应id获取data数据里面对应的数据项
+        document.getElementById('m01').innerHTML = data.m01;
+        document.getElementById('m02').innerHTML = data.m02;
+        document.getElementById('m03').innerHTML = data.m03;
+        document.getElementById('m04').innerHTML = data.m04;
+        document.getElementById('m05').innerHTML = data.m05;
+        document.getElementById('m06').innerHTML = data.m06;
+        document.getElementById('m07').innerHTML = data.m07;
+        document.getElementById('m08').innerHTML = data.m08;
+        document.getElementById('m09').innerHTML = data.m09;
+        document.getElementById('m10').innerHTML = data.m10;
+        document.getElementById('m11').innerHTML = data.m11;
+        document.getElementById('m12').innerHTML = data.m12;
+        document.getElementById('m13').innerHTML = data.m13;
+        document.getElementById('m14').innerHTML = data.m14;
+        document.getElementById('m15').innerHTML = data.m15;
+        document.getElementById('m16').innerHTML = data.m16;
+        document.getElementById('m17').innerHTML = data.m17;
+        document.getElementById('m18').innerHTML = data.m18;
+        document.getElementById('m19').innerHTML = data.m19;
+        document.getElementById('m20').innerHTML = data.m20;
+        // 1秒后再次请求
+        setInterval(function() {
+            motor();
+        },100000);
     }
 </script>
 </body>

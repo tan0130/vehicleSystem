@@ -30,33 +30,36 @@
         </tr>
     </table>
 </div>
-<script>
+<script type="text/javascript">
     locate();
     function locate() {
-        var xhr;
-        if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
-            xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
-        }else if(window.XMLHttpRequest){
-            xhr = new XMLHttpRequest();
-        }
-        xhr.open('get','locationdata.json',true);
-        xhr.send(null);
-        xhr.onload = hanlder;
+        var vinCode = window.parent.document.getElementById("vin").value;
+        $.ajax({
+            type: 'get',
+            async: false,
+            cache: false,
+            url: 'http://10.14.131.7/GuobiaoTest/servlet/GetLocation',
+            data: {
+                vin: vinCode
+            },
+            dataType: 'jsonp',
+            jsopnCallback: 'jsonpCallback',
+            success: function(data) {
+                handler(data); // data 已经是 object 对象了
+            }
+        })
     };
-    function hanlder(e) {
-        var xhr = e.target;
-        if(xhr.status == 200 || xhr.status == 304 || xhr.status == 0) {
-            var data = JSON.parse(xhr.responseText);
-            // 对应id获取data数据里面对应的数据项
-            document.getElementById('l01').innerHTML = data.l01;
-            document.getElementById('l02').innerHTML = data.l02;
-            document.getElementById('l03').innerHTML = data.l03;
-            // 1秒后再次请求
-            setInterval(function() {
-                locate();
-            },10000);
-        }
+    function handler(data) {
+        // 对应id获取data数据里面对应的数据项
+        document.getElementById('l01').innerHTML = data.l01;
+        document.getElementById('l02').innerHTML = data.l02;
+        document.getElementById('l03').innerHTML = data.l03;
+        // 1秒后再次请求
+        setInterval(function() {
+            locate();
+        },100000);
     }
+
 </script>
 </body>
 </html>

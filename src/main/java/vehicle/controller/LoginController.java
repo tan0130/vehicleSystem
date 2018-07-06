@@ -13,6 +13,7 @@ import vehicle.service.UserService;
  * 用户登录控制器是实现
  * 主要功能：对用户id和密码进行校验
  **/
+
 @Controller
 @RequestMapping("/login")
 @Transactional

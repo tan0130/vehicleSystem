@@ -31,41 +31,44 @@
         </tr>
     </table>
 </div>
-<script>
+<script type="text/javascript">
     extreme();
     function extreme() {
-        var xhr;
-        if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
-            xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
-        }else if(window.XMLHttpRequest){
-            xhr = new XMLHttpRequest();
-        }
-        xhr.open('get','extremedata.json',true);
-        xhr.send(null);
-        xhr.onload = hanlder;
+        var vinCode = window.parent.document.getElementById("vin").value;
+        $.ajax({
+            type: 'get',
+            async: false,
+            cache: false,
+            url: 'http://10.14.131.7/GuobiaoTest/servlet/GetExtremum',
+            data: {
+                vin: vinCode
+            },
+            dataType: 'jsonp',
+            jsopnCallback: 'jsonpCallback',
+            success: function(data) {
+                handler(data); // data 已经是 object 对象了
+            }
+        })
     }
-    function hanlder(e) {
-        var xhr = e.target;
-        if(xhr.status == 200 || xhr.status == 304 || xhr.status == 0) {
-            var data = JSON.parse(xhr.responseText);
-            document.getElementById('e401').innerHTML = data.e01;
-            document.getElementById('e402').innerHTML = data.e02;
-            document.getElementById('e403').innerHTML = data.e03;
-            document.getElementById('e404').innerHTML = data.e04;
-            document.getElementById('e405').innerHTML = data.e05;
-            document.getElementById('e406').innerHTML = data.e06;
-            document.getElementById('e407').innerHTML = data.e07;
-            document.getElementById('e408').innerHTML = data.e08;
-            document.getElementById('e409').innerHTML = data.e09;
-            document.getElementById('e410').innerHTML = data.e10;
-            document.getElementById('e411').innerHTML = data.e11;
-            document.getElementById('e412').innerHTML = data.e12;
+    function handler(data) {
+       // var data = JSON.parse(xhr.responseText); json 数据转换成 Object 对象
+        document.getElementById('e401').innerHTML = data.e01;
+        document.getElementById('e402').innerHTML = data.e02;
+        document.getElementById('e403').innerHTML = data.e03;
+        document.getElementById('e404').innerHTML = data.e04;
+        document.getElementById('e405').innerHTML = data.e05;
+        document.getElementById('e406').innerHTML = data.e06;
+        document.getElementById('e407').innerHTML = data.e07;
+        document.getElementById('e408').innerHTML = data.e08;
+        document.getElementById('e409').innerHTML = data.e09;
+        document.getElementById('e410').innerHTML = data.e10;
+        document.getElementById('e411').innerHTML = data.e11;
+        document.getElementById('e412').innerHTML = data.e12;
 
-            // 1秒后再次请求
-            setInterval(function() {
-                extreme();
-            },10000);
-        }
+        // 1秒后再次请求
+        setInterval(function() {
+            extreme();
+        },100000);
     }
 </script>
 </body>

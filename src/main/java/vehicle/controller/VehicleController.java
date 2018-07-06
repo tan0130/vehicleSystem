@@ -1,5 +1,6 @@
 package vehicle.controller;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,6 @@ import java.util.Map;
  * 监控系统的控制层实现，实现页面跳转及输入校验
  **/
 @Controller
-@Transactional
 @RequestMapping("/map")
 public class VehicleController {
 
@@ -75,8 +75,9 @@ public class VehicleController {
     public String toMotorPage() {
         return "page/motorData";
     }
+
     // 报文信息查询
-    @RequestMapping(value = "/searchData", produces = "application/json; charset=utf-8", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/searchData", produces = "application/json; charset=utf-8", method = RequestMethod.GET)
     @ResponseBody
     public String searchData(String vin) {
         try {
@@ -85,10 +86,10 @@ public class VehicleController {
             jsonMap.put("total", vehicle.size());
             jsonMap.put("rows", vehicle);
             ObjectMapper mapper = new ObjectMapper();
-            String json = mapper.writeValueAsString(vehicle);
+            String json = mapper.writeValueAsString(jsonMap);
             return json;
         } catch(Exception e) {
             return "";
         }
-    }
+    }*/
 }
