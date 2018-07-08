@@ -1426,6 +1426,12 @@ pre code {
 	width: 1170px
 }
 }
+/*自定义*/
+@media (min-width:1920px) {
+.container {
+	width: 1870px
+}
+}
 .container-fluid {
 	padding-right: 15px;
 	padding-left: 15px;

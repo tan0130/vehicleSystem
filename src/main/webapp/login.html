@@ -1,144 +1,122 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-    <!--浏览器兼容-->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!--适应不同设备-->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>bootstrapt实例</title>
-    <link rel="stylesheet" href="resources/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="resources/css/login.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>后台管理</title>
+    <link rel="stylesheet" href="resources/css/login1.css" />
     <script type="text/javascript" src="resources/js/jquery.min.js"></script>
     <script type="text/javascript" src="resources/js/jquery.validate.js"></script>
-    <script type="text/javascrip"t src="resources/js/bootstrap.min.js"></script>
-
 </head>
 
 <body>
-<div class="container">
-    <div class="row clearfix">
-        <div class="col-md-12 column">
-            <div class="panel panel-primary" style="margin-top:20%;margin-left:30%;width:40%">
-                <div class="panel-heading">
-                    <h3 class="login-title">
-                        登录界面
-                    </h3>
-                </div><!--end heading-->
-                <div class="panel-body">
-                    <div style="padding: 30px 120px 50px 80px;">
-                        <form id="signform" class="bs-example bs-example-form" method="post" role="form">
-                            <div class="input-group">
-                                <span class="input-group-addon">工号</span>
-                                <input type="text" id="id" class="form-control" placeholder="请输入工号">
-                            </div>
-                            <br>
-                            <div class="input-group">
-                                <span class="input-group-addon">密码</span>
-                                <input type="password" id="password" class="form-control" placeholder="请输入密码">
-                            </div>
-                            <br>
-                            <div id="myButtons1" style="margin-top:15px;margin-bottom: -15px">
-                                <!--<button type="button" class="btn btn-primary">原始</button>-->
-                                <input type="submit" class="btn btn-primary" value="登录"/>
-                                <input type="reset" class="btn btn-primary" value="重置" style="margin-left:30px"/>
-                                <a href=""><span style="font-size:12px;margin-top:30px">忘记密码</span></a>
-                            </div>
-                        </form>
-                    </div>
-                </div><!--end body-->
-            </div><!--end 1st panel-->
-        </div><!--end 1st column-->
-    </div> <!--end 1st row-->
-</div><!--end 1st container-->
+<div class="login_box">
+    <div class="login_l_img"><img src="/resources/img/login-img.png" /></div>
+    <div class="login">
+        <div class="login_logo"><a href="#"><img src="/resources/img/login_logo.png" /></a></div>
+        <div class="login_name">
+            <p>后台管理系统</p>
+        </div>
+        <form id="sign" method="post">
+            <input name="username" type="text" id="userId"  value="用户名" >
+            <!--<span id="password_text" onclick="this.style.display='none';document.getElementById('password').style.display='block';document.getElementById('password').focus().select();" >密码</span>-->
+            <input name="password" type="password" id="userPwd" value="密码"/>
+            <input value="登录" style="width:100%;" type="submit">
+        </form>
+    </div>
+    <div class="copyright">某某有限公司 版权所有©2016-2018 技术支持电话：000-00000000</div>
+</div>
+<div style="text-align:center;">
+    <p>更多模板：<a href="http://www.mycodes.net/" target="_blank">源码之家</a></p>
+</div>
 <script type="text/javascript">
-// 自定义校验id
-    $.validator.addMethod("idCheck", function(value, element) {
-       var id = $('#id').val();
-       console.log(id);
-       $.ajax({
-          type: 'get',
-          url: '/login/getUserById',
-          async: false,
-          cache: false,
-          data: {
-              vin: id
-          },
-          dataType: 'text',
-          success:function(data) {
-              if(data == "fail") {
-                  value = false;
-              } else if(data == "error") {
-                  $.messager.alert("信息提示", "服务器出错了", "info");
-              } else {
-                  value = true;
-              }
-          },
-           error:function() {
-               $.messager.alert("信息提示", "服务器出错了", "info");
-           }
-       });
-       return this.optional(element) || value;
-    }, "用户不存在");
-
-    // 自定义校验密码
-    $.validator.addMethod("pwdCheck", function(value, element) {
-        var id = $('#id').val();
-        var password = $('#password').val();
-        $.ajax({
-           type: 'get',
-           url: '/login/getUserByIdAndPwd',
-           async: false,
-           cache: false,
-           data: {
-               id: id,
-               password: password
-           },
-           dataType: 'text',
-           success:function(data) {
-               if(data == "fail") {
-                   value = false;
-               } else if(data == "error") {
-                   $.messager.alert("信息提示", "服务器出错了", "info");
-               } else {
-                   value = true;
-               }
-           },
-            error:function() {
-               $.messager.alert("信息提示", "服务器出错了", "info");
+    $.validator.addMethod('idCheck', function(value, element) {
+        var userid = $('#userId').val();
+        /*if (flag) {
+            return;
+        }
+        flag = true;*/
+        $.ajax({ // 进入ajax提交过程
+            type: 'get',
+            async: false,
+            url: '/login/getUserById',
+            dataType: 'text',
+            data: {
+                id: userid
+            },
+            success: function(data) {
+                if(data == "false") {
+                    value = false;
+                } else if(data == "false") {
+                    $.messager.alert('信息提示', '服务不可用', 'info');
+                } else {
+                    value = true;
+                }
+                // flag = false; // 标记为可提交状态
+            },
+            error: function(data) {
+                // flag = false;
+                $.messager.alert('信息提示', '服务不可用!', 'info');
             }
         });
         return this.optional(element) || value;
-    }, "密码不正确");
-
-    $().ready(function() {
-       $('#signform').validate({
-           rules: {
-                id: {
-                    required: true,
-                    //idCheck: true
-                },
-                password: {
-                    required: true,
-
-                    //pwdCheck: true
+    }, '用户不存在');
+    // 自定义校验密码是否正确
+    $.validator.addMethod('pwdCheck', function(value, element) {
+        var userid = $('#userId').val();
+        var userpwd = $('#userPwd').val();
+        $.ajax({
+            type: 'get',
+            async: false,
+            cache: false,
+            url: '/login/getUserByIdAndPwd',
+            data: {
+                id: userid,
+                password: userpwd
+            },
+            success: function(data) {
+                if(data == "false") {
+                    value = false;
+                } else if(data == "error") {
+                    $.messager.alert('信息提示', '服务不可用', 'info');
+                } else {
+                    value = true;
                 }
-           },
-           messages: {
-                id: {
-                    required: "请输入工号",
-                    //idCheck: "用户不存在"
+            },
+            error: function() {
+                $.messager.alert('信息提示', '服务不可用', 'info');
+            }
+        });
+        return this.optional(element) || value;
+    }, '密码不正确');
+    $().ready(function(){
+        $('#sign').validate({
+            rules: {
+                userId: {
+                    required: true,
+                    idCheck: true
                 },
-                password: {
-                    required: "请输入密码",
-                    //pwdCheck: "密码不正确"
+                userPwd: {
+                    required: true,
+                    pwdCheck: true
                 }
-           },
-           submitHandler:function() {
-               window.location.href = "/login/toPage";
-           }
-       });
-    });
+            },
+            messages: {
+                userId: {
+                    required: "该项为必填项",
+                    idCheck: "用户不存在"
+                },
+                userPwd: {
+                    required: "该项为必填项",
+                    pwdCheck: "密码不正确"
+                }
+            },
+            submitHandler: function() {
+                //var id = $('#userId').val();
+                window.location.href = "/login/toPage";
+            }
+        })
+    })
 </script>
 </body>
 </html>

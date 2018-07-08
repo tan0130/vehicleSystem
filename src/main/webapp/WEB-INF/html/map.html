@@ -3,10 +3,18 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>地图展示</title>
+
+    <style type="text/css">
+        /*html{height:100%}
+        body{height:100%;margin:0px;padding:0px}*/
+        /*#map {
+            height: 100%;
+        }*/
+    </style>
+    <link rel="stylesheet" href="/resources/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resources/js/bootstrap.min.js"></script>
     <!--引用百度地图API-->
-    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css"/>
-    <script src="../../resources/js/jquery.min.js"></script>
-    <script src="../../resources/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=hX0x7cf4WRGXsxfoKg5zHdleblFiyT8c"></script>
 </head>
 
@@ -35,7 +43,7 @@
     <div style="margin-top:5px">
         <label>车架号：</label>
         <input type="text" id="vin"/>
-        <input type="button" value="查找" onclick="queryOneVehicle()" placeholder="请输入正确车架号"/>
+        <input type="button" value="查找" onclick="handlerOne()" placeholder="请输入正确车架号"/>
         <label>车辆总数：</label>
         <input type="text" id="totalNum" style="width:80px" readonly="true"/>
         <label>在线：</label>
@@ -45,9 +53,14 @@
     </div>
 </div>
 <!--百度地图容器-->
-<div style="width:100%;height:600px;border:#ccc solid 1px;font-size:12px" id="map"></div>
+<div style="margin-top:-20px;height:820px;border:#ccc solid 1px;font-size:12px" id="map"></div>
 <script type="text/javascript">
-   /* var data = [{vin:"LA95C86H9G1LC0001",state:"离线",longitude:114.376667,latitude:22.683645},
+
+
+
+
+    // test data
+    /*var data = [{vin:"LA95C86H9G1LC0001",state:"离线",longitude:114.376667,latitude:22.683645},
         {vin:"LA95C86H9G1LC0002",state:"离线",longitude:114.366667,latitude:22.683645},
         {vin:"LA95C86H9G1LC0003",state:"在线",longitude:114.356686,latitude:22.683645},
         {vin:"LA95C86H9G1LC0004",state:"在线",longitude:114.346686,latitude:22.683645},
@@ -55,7 +68,15 @@
         {vin:"LA95C86H9G1LC0006",state:"离线",longitude:114.326686,latitude:22.683645},
         {vin:"LA95C86H9G1LC0007",state:"离线",longitude:114.316686,latitude:22.683645},
         {vin:"LA95C86H9G1LC0008",state:"离线",longitude:114.306667,latitude:22.683645}];*/
-    //var data1 = [{state:"在线",longitude:120.356686,latitude:22.683645}];
+    var data = {"total":5,"rows":[{vin:"LA95C86H9G1LC0001",state:"离线",longitude:114.376667,latitude:22.683645},
+        {vin:"LA95C86H9G1LC0002",state:"离线",longitude:114.366667,latitude:22.683645},
+        {vin:"LA95C86H9G1LC0003",state:"在线",longitude:114.356686,latitude:22.683645},
+        {vin:"LA95C86H9G1LC0004",state:"在线",longitude:114.346686,latitude:22.683645},
+        {vin:"LA95C86H9G1LC0005",state:"在线",longitude:114.336686,latitude:22.683645},
+        {vin:"LA95C86H9G1LC0006",state:"离线",longitude:114.326686,latitude:22.683645},
+        {vin:"LA95C86H9G1LC0007",state:"离线",longitude:114.316686,latitude:22.683645},
+        {vin:"LA95C86H9G1LC0008",state:"离线",longitude:114.306667,latitude:22.683645}]};
+
 
     var map;
     var marker;
@@ -72,7 +93,8 @@
         //addMapOverlay(); // 向地图添加覆盖物
         clear(); // 清空输入框的信息
         //requestData(); // 从服务器请求数据，并相应的操作
-        queryAllVehicles(); // 部署项目前测试函数
+        //queryAllVehicles(); // 部署项目前测试函数
+        handlerAll(data); // test
     }<!--end function initMap-->
 
     // 创建地图
@@ -101,19 +123,17 @@
             dataType: 'jsonp',
             jsopnCallback: 'jsonpCallback',
             success: function(data) {
-                handler(data); // data 已经是 object 对象了
+                handlerAll(data); // data 已经是 object 对象了
             }
         })
     }
 
     // 查询所有车辆信息，服务器返回经纬度及车辆状态信息，然后标注在地图上，并显示相关信息
-    function handler(data) {
+    function handlerAll(data) {
         var obj = [];
         $.each(data.rows,function(i,d){
             obj.push(d);
-        })
-
-
+        });
         clear();
         if (marker)
             map.removeOverlay(marker); // 清除原来的标志
@@ -193,7 +213,9 @@
     }
 
 
-    function handlerOne(data) {
+    function handlerOne() {
+        // test
+        var data1 = {vin:"LA95C86H9G1LC0002",state:"在线",longitude:120.356686,latitude:22.683645};
         // 获取输入框的值
         var vinCode = document.getElementById("vin").value;
         // 正则表达式验证车架号输入的合法性
@@ -212,18 +234,18 @@
             var offLineNum = 0;
 
             //var data1 = [{state:"在线",longitude:120.356686,latitude:22.683645}];
-            if(data.vin == "") {
+            if(data1.vin == "") {
                 alert("车辆未录入监控系统");
             } else {
                 //for(var i in data1) {
-                    state = data.state;
+                    state = data1.state;
                     if(state == "在线")
                         onLineNum++;
                     if(state == "离线")
                         offLineNum++;
                     totalNum = onLineNum + offLineNum;
-                    lng = data.longitude;
-                    lat = data.latitude;
+                    lng = data1.longitude;
+                    lat = data1.latitude;
 
                     var locPoint = new BMap.Point(lng, lat);
 
@@ -242,7 +264,7 @@
                         marker.addEventListener("mouseover", function () { this.openInfoWindow(infoWindow); });
                         marker.addEventListener("mouseout",function(e){
                             //this.closeInfoWindow(infoWindow);
-                            queryAllVehicles();
+                            handlerAll(data);
                         });
                         marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
                     });

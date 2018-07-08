@@ -25,14 +25,20 @@ public class LoginController {
     // 根据id查询用户信息
     @RequestMapping(value = "/getUserById", method = RequestMethod.GET)
     @ResponseBody
-    public String getUserById(int id) {
+    public String getUserById(String id) {
         try {
-            if(userService.getUserById(id) == null) {
+            System.out.println("id为：" + id);
+            /*if(userService.getUserById(id) == null) {
                 System.out.println("id信息为："+ id);
                 System.out.println("用户信息为：" + userService.getUserById(id));
                 return "fail";
             } else {
                 return "success";
+            }*/
+            if (("admin").equals(id)) {
+                return "true";
+            } else {
+                return "false";
             }
         } catch(Exception e) {
             return "error";
@@ -42,12 +48,13 @@ public class LoginController {
     // 根据id和密码查询用户信息
     @RequestMapping(value = "/getUserByIdAndPwd", method = RequestMethod.GET)
     @ResponseBody
-    public String getUserByIdAndPwd(int id, String password) {
+    public String getUserByIdAndPwd(String id, String password) {
         try {
-            if(userService.getUserByIdAndPwd(id, password) == null) {
-                return "fail";
+
+            if (("admin").equals(id) && ("liu.yuan10").equals(password)) {
+                return "true";
             } else {
-                return "success";
+                return "false";
             }
         } catch(Exception e) {
             return "error";
@@ -57,7 +64,6 @@ public class LoginController {
     // 验证成功，跳转菜单页面
     @RequestMapping(value = "/toPage")
     public String toPage() {
-        System.out.println("页面跳转");
         return "html/main";
     }
 
