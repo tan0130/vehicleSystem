@@ -9,8 +9,5 @@
         <module name="vehicleSystem" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="vehicleSystem" target="1.7" />
-    </bytecodeTargetLevel>
   </component>
 </project>

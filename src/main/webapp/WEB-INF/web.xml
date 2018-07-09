@@ -27,6 +27,22 @@
     </init-param>
     <!-- <load-on-startup>1</load-on-startup> -->
   </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>vehicle.controller.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/servlet/LoginServlet</url-pattern>
+    </servlet-mapping>
+  <servlet>
+    <servlet-name>ImgServlet</servlet-name>
+    <servlet-class>vehicle.controller.ImgServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ImgServlet</servlet-name>
+    <url-pattern>/servlet/ImgServlet</url-pattern>
+  </servlet-mapping>
 
   <servlet-mapping>
     <servlet-name>springmvc</servlet-name>
