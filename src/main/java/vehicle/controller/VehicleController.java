@@ -20,7 +20,7 @@ import java.util.Map;
  * 监控系统的控制层实现，实现页面跳转及输入校验
  **/
 @Controller
-@RequestMapping("/vehicle")
+@RequestMapping("/map")
 public class VehicleController {
 
     @Autowired
