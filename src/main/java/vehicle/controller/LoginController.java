@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import vehicle.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Random;
+
 /**
  * create by tan on 2018/5/18
  * 用户登录控制器是实现
@@ -16,7 +20,6 @@ import vehicle.service.UserService;
 
 @Controller
 @RequestMapping("/login")
-@Transactional
 public class LoginController {
 
     @Autowired
@@ -62,9 +65,37 @@ public class LoginController {
     }
 
     // 验证成功，跳转菜单页面
-    @RequestMapping(value = "/toPage")
+   /* @RequestMapping(value = "/toPage")
     public String toPage() {
         return "html/main";
     }
+*/
 
+    // 登录验证
+    @RequestMapping(value = "/check", method = RequestMethod.GET)
+    @ResponseBody
+    public String page(HttpServletRequest request,
+                       HttpServletResponse response) {
+        String id = request.getParameter("id").trim();
+        String password = request.getParameter("password").trim();
+        if (!("admin".equals(id))) {
+            return "idNotExist";
+        } else if (!("liu.yuan10".equals(password))) {
+            return "errorPassword";
+        } else {
+            return "success";
+        }
+    }
+
+    // 验证码
+    @RequestMapping(value = "/checkCode")
+    @ResponseBody
+    public StringBuffer getValidCode() {
+        StringBuffer sb = new StringBuffer("");
+        String baseChar = "0123456789ABCDEFGHJKLMNPQRSTUVWXYZ"; //不包括字母O，只有数字0
+        for(int i = 0 ; i < 4 ; i++){
+            sb.append(baseChar.charAt(new Random().nextInt(baseChar.length())) + "");
+        }
+        return sb;
+    }
 }

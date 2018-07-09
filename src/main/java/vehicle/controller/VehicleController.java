@@ -31,8 +31,18 @@ public class VehicleController {
         return "html/main";
     }*/
 
+    @RequestMapping(value = "toErrorPage")
+    public String toErrorPage() {
+        return "/error/error";
+    }
+
     @RequestMapping(value = "/toMainPage")
     public String toMainPage() {
+        return "html/main";
+    }
+
+    @RequestMapping(value = "/toMapPage")
+    public String toMapPage() {
         return "html/map";
     }
 

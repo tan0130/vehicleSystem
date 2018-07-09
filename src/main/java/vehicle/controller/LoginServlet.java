@@ -28,6 +28,12 @@ public class LoginServlet extends HttpServlet {
 
         LoginFormBean formBean = WebUtil.request2Bean(request, LoginFormBean.class);
 
+        String user = (String)request.getSession().getAttribute("user");
+
+
+
+
+
         // 对输入数据是否为空做校验
         if (!formBean.loginValidate()) {
             request.setAttribute("formBean", formBean);
@@ -45,6 +51,7 @@ public class LoginServlet extends HttpServlet {
             formBean.getErrors().put("error", "验证码不正确");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
         } else {
+            request.setAttribute("user", id1);
             request.getRequestDispatcher("/WEB-INF/html/main.html").forward(request, response);
         }
     }
