@@ -6,15 +6,8 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="85854d32-3439-48d7-94d4-c15e909db3fa" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../vehicleSystem/src/main/webapp/WEB-INF/error/error.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../vehicleSystem/src/main/webapp/login.html" afterDir="false" />
+    <list default="true" id="85854d32-3439-48d7-94d4-c15e909db3fa" name="Default" comment="加入登录界面，增加校验，springmvc实现">
       <change beforePath="$PROJECT_DIR$/../vehicleSystem/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../vehicleSystem/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vehicleSystem/src/main/java/vehicle/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../vehicleSystem/src/main/java/vehicle/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vehicleSystem/src/main/java/vehicle/controller/LoginServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../vehicleSystem/src/main/java/vehicle/controller/LoginServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vehicleSystem/src/main/java/vehicle/controller/VehicleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../vehicleSystem/src/main/java/vehicle/controller/VehicleController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vehicleSystem/src/main/webapp/WEB-INF/html/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/../vehicleSystem/src/main/webapp/WEB-INF/html/main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vehicleSystem/src/main/webapp/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/../vehicleSystem/src/main/webapp/login.jsp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -51,8 +44,8 @@
       <file leaf-file-name="login.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../vehicleSystem/src/main/webapp/login.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="105" column="34" lean-forward="true" selection-start-line="105" selection-start-column="34" selection-end-line="105" selection-end-column="34" />
+            <state relative-caret-position="216">
+              <caret line="97" column="32" lean-forward="true" selection-start-line="97" selection-start-column="32" selection-end-line="97" selection-end-column="32" />
               <folding>
                 <element signature="e#1965#2388#0" />
               </folding>
@@ -543,7 +536,7 @@
       <workItem from="1526951683968" duration="2608000" />
       <workItem from="1530755765615" duration="30201000" />
       <workItem from="1531098593130" duration="1905000" />
-      <workItem from="1531100539559" duration="26175000" />
+      <workItem from="1531100539559" duration="27880000" />
     </task>
     <task id="LOCAL-00001" summary="spring+springmvc+mybatis&#10;百度地图监控">
       <created>1526378008129</created>
@@ -650,18 +643,24 @@
       <option name="project" value="LOCAL" />
       <updated>1531119163485</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="加入登录界面，增加校验，springmvc实现">
+      <created>1531130187380</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1531130187380</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="129194000" />
+    <option name="totallyTimeSpent" value="130899000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5007236" side_tool="true" weight="0.3272472" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50289434" side_tool="true" visible="true" weight="0.49578652" />
       <window_info anchor="bottom" id="Application Servers" order="7" sideWeight="0.49855283" weight="0.3272472" />
       <window_info anchor="right" id="Maven Projects" order="3" weight="0.3299566" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
@@ -678,10 +677,10 @@
       <window_info id="Image Layers" order="2" />
       <window_info anchor="bottom" id="Java Enterprise" order="7" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4992764" visible="true" weight="0.44241574" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49855283" weight="0.44241574" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49855283" weight="0.3511236" />
       <window_info anchor="bottom" id="Spring" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49782923" weight="0.49578652" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49710566" visible="true" weight="0.49578652" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4989518" visible="true" weight="0.24457309" />
       <window_info id="Web" order="2" sideWeight="0.5010482" side_tool="true" weight="0.24457309" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.42837077" />
@@ -706,7 +705,8 @@
     <MESSAGE value="加入登录界面，未调试通过" />
     <MESSAGE value="Merge branch 'master' of https://github.com/tan0130/vehicleSystem&#10;&#10;# Conflicts:&#10;#&#9;.idea/artifacts/vehicleSystem_war_exploded.xml&#10;#&#9;.idea/vcs.xml&#10;#&#9;.idea/workspace.xml&#10;#&#9;src/main/java/vehicle/controller/LoginController.java&#10;#&#9;src/main/webapp/WEB-INF/html/main.html&#10;#&#9;src/main/webapp/WEB-INF/html/map.html&#10;#&#9;src/main/webapp/WEB-INF/html/menu.html&#10;#&#9;src/main/webapp/WEB-INF/html/search.html&#10;#&#9;src/main/webapp/WEB-INF/page/alertData.html&#10;#&#9;src/main/webapp/WEB-INF/page/extremeData.html&#10;#&#9;src/main/webapp/WEB-INF/page/locationData.html&#10;#&#9;src/main/webapp/WEB-INF/page/motorData.html&#10;#&#9;src/main/webapp/WEB-INF/page/stateData.html&#10;#&#9;src/main/webapp/WEB-INF/page/vehicleData.html&#10;#&#9;src/main/webapp/login.html" />
     <MESSAGE value="添加登录界面，加入权限验证和验证码验证，调试通过" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加登录界面，加入权限验证和验证码验证，调试通过" />
+    <MESSAGE value="加入登录界面，增加校验，springmvc实现" />
+    <option name="LAST_COMMIT_MESSAGE" value="加入登录界面，增加校验，springmvc实现" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../vehicleSystem/src/main/webapp/resources/js/jquery.validate.js">
@@ -1049,8 +1049,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../vehicleSystem/src/main/webapp/login.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="105" column="34" lean-forward="true" selection-start-line="105" selection-start-column="34" selection-end-line="105" selection-end-column="34" />
+        <state relative-caret-position="216">
+          <caret line="97" column="32" lean-forward="true" selection-start-line="97" selection-start-column="32" selection-end-line="97" selection-end-column="32" />
           <folding>
             <element signature="e#1965#2388#0" />
           </folding>
