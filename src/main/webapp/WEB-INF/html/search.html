@@ -3,6 +3,7 @@
 <head>
     <!--浏览器兼容-->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1" />-->
     <!--适应不同设备-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -138,13 +139,19 @@
             Icons:'glyphicon-export',
             columns:[
                 [{title:"序号",formatter: function(value,row,index) {return index + 1}},
-                    {field:"vin",title:"车架号",width:"20%"},
+                    {field:"vin",title:"车架号"},
                     {field:"servertime",title:"服务器时间"},
                     {field:"codetime",title:"报文时间"},
                     {field:"codetype",title:"类型"},
                     {field:"codecheck",title:"校验"},
                     {field:"codelength",title:"报文长度"},
-                    {field:"origincode",title:"原始报文"}
+                    {field:"vehicle",title:"整车报文"},
+                    {field:"motor",title:"电机报文"},
+                    {field:"location",title:"位置报文"},
+                    {field:"extreme",title:"极值报文"},
+                    {field:"alert",title:"报警报文"},
+                    {field:"voltage",title:"电压报文"},
+                    {field:"temperature",title:"温度报文"}
                 ]
             ]
         });

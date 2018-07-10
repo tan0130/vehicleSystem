@@ -1,6 +1,4 @@
 @charset "utf-8";
-{ font: 13px/1.5 '微软雅黑'; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -box-sizing: border-box; padding:0; margin:0; list-style:none; box-sizing: border-box; }
-body, html { height:100%; overflow:hidden; }
 .login-hd {
 	position: relative;
 	height: 94px;
@@ -253,11 +251,11 @@ body, html { height:100%; overflow:hidden; }
 }
 .login-bd .bd-inner .inner-wrap .lg-poster {
 	height: 541px;
-	background: url(/resources/img/loginbg1.png) right center no-repeat
+	background: url(/resources/img/blue.jpg) right center no-repeat
 }
 
 .login-ft {
-	margin-top: 8%;
+	margin: 0 auto;
 	min-width: 1200px
 }
 

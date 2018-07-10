@@ -86,6 +86,16 @@ public class VehicleController {
         return "page/motorData";
     }
 
+    @RequestMapping(value = "/toVoltagePage")
+    public String toVoltagePage() {
+        return "page/voltageData";
+    }
+
+    @RequestMapping(value = "/toTemperaturePage")
+    public String toTemperaturePage() {
+        return "page/temperatureData";
+    }
+
     // 报文信息查询
     /*@RequestMapping(value = "/searchData", produces = "application/json; charset=utf-8", method = RequestMethod.GET)
     @ResponseBody
