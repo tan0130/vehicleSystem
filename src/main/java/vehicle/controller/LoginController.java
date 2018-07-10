@@ -94,7 +94,7 @@ public class LoginController {
         StringBuffer sb = new StringBuffer("");
         String baseChar = "0123456789ABCDEFGHJKLMNPQRSTUVWXYZ"; //不包括字母O，只有数字0
         for(int i = 0 ; i < 4 ; i++){
-            sb.append(baseChar.charAt(new Random().nextInt(baseChar.length())) + "");
+            sb.append(baseChar.charAt(new Random().nextInt(baseChar.length())) + " ");
         }
         return sb;
     }

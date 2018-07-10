@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>新能源车辆服务系统</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/easyui.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/iconfont.css">
@@ -117,10 +119,10 @@
                 return true;
             },
             success: function(data) {
-                if (!(checkCode == checkCodeServer)) {
+                if (!(checkCode.toLowerCase() == checkCodeServer.replace(/\s+/g,"").toLowerCase())) {
                     $('.message')[0].innerHTML = "验证码不一致"
                 } else if ("success" == data) {
-                    window.location.href = "/vehicle/toMainPage";
+                    window.location.href = "/map/toMainPage";
                 } else if ("idNotExist" == data) {
                     $('.message')[0].innerHTML = "用户不存在";
                     return false;
@@ -130,7 +132,7 @@
                 }
             },
             error: function() {
-                window.location.href = "/vehicle/toErrorPage";
+                window.location.href = "/map/toErrorPage";
             }
         })
     }
