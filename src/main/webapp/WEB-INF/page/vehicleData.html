@@ -68,20 +68,22 @@
     </table>
 </div>
 <script type="text/javascript">
-    vehicle();
-
+    //vehicle();
+    window.onload = setInterval(function() {
+        vehicle();
+    },30000);
     function vehicle() {
         var vinCode = window.parent.document.getElementById("vin").value;
         $.ajax({
             type: 'get',
             async: false,
             cache: false,
-            url: 'http://10.14.131.7/GuobiaoTest/servlet/GetVehicle',
+            url: 'http://119.23.75.214/GuobiaoTest/servlet/GetVehicle',
             data: {
                 vin: vinCode
             },
             dataType: 'jsonp',
-            jsopnCallback: 'jsonpCallback',
+            jsonpCallback: 'jsonpCallback',
             success: function(data) {
                 handler(data); // data 已经是 object 对象了
             }
@@ -104,9 +106,9 @@
         document.getElementById('v214').innerHTML = data.v14;
         document.getElementById('v215').innerHTML = data.v15;
 
-        setInterval(function() {
+        /*setInterval(function() {
             vehicle();
-        },100000);
+        },30000);*/
     }
 </script>
 </body>

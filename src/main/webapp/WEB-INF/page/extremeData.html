@@ -32,24 +32,24 @@
     </table>
 </div>
 <script type="text/javascript">
-    extreme();
-    function extreme() {
+    //extreme();
+    window.onload = setInterval(function extreme(){
         var vinCode = window.parent.document.getElementById("vin").value;
         $.ajax({
             type: 'get',
             async: false,
             cache: false,
-            url: 'http://10.14.131.7/GuobiaoTest/servlet/GetExtremum',
+            url: 'http://119.23.75.214/GuobiaoTest/servlet/GetExtremum',
             data: {
                 vin: vinCode
             },
             dataType: 'jsonp',
-            jsopnCallback: 'jsonpCallback',
+            jsonpCallback: 'jsonpCallback',
             success: function(data) {
                 handler(data); // data 已经是 object 对象了
             }
         })
-    }
+    },30000)
     function handler(data) {
        // var data = JSON.parse(xhr.responseText); json 数据转换成 Object 对象
         document.getElementById('e401').innerHTML = data.e01;
@@ -66,9 +66,9 @@
         document.getElementById('e412').innerHTML = data.e12;
 
         // 1秒后再次请求
-        setInterval(function() {
+        /*setInterval(function() {
             extreme();
-        },100000);
+        },30000);*/
     }
 </script>
 </body>

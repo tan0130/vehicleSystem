@@ -38,24 +38,24 @@
     </table>
 </div>
 <script>
-    state();
-    function state() {
+    //state();
+    window.onload = setInterval(function state() {
         var vinCode = window.parent.document.getElementById("vin").value;
         $.ajax({
             type: 'get',
             async: false,
             cache: false,
-            url: 'http://10.14.131.7/GuobiaoTest/servlet/GetStatus',
+            url: 'http://119.23.75.214/GuobiaoTest/servlet/GetStatus',
             data: {
                 vin: vinCode
             },
             dataType: 'jsonp',
-            jsopnCallback: 'jsonpCallback',
+            jsonpCallback: 'jsonpCallback',
             success: function(data) {
                 handler(data); // data 已经是 object 对象了
             }
         })
-    }
+    },30000)
     function handler(data) {
         document.getElementById('s601').innerHTML = data.incode;
         document.getElementById('s602').innerHTML = data.outcode;
@@ -63,9 +63,9 @@
         document.getElementById('s604').innerHTML = data.outtime;
         document.getElementById('s605').innerHTML = data.iccid;
 
-        setInterval(function() {
+        /*setInterval(function() {
             state();
-        },100000);
+        },30000);*/
     }
 
 </script>

@@ -81,33 +81,26 @@
     </table>
 </div>
 <script type="text/javascript">
-    alertData();
-    function alertData() {
-        /*var xhr;
-        if (window.ActiveXObject) {//IE浏览器创建XMLHttpRequest对象
-            xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
-        }else if(window.XMLHttpRequest){
-            xhr = new XMLHttpRequest();
+    window.onload = setInterval(
+        function alertData() {
+            var vinCode = window.parent.document.getElementById("vin").value;
+            $.ajax({
+                type: 'get',
+                async: false,
+                cache: false,
+                url: 'http://119.23.75.214/GuobiaoTest/servlet/GetAlert',
+                data: {
+                    vin: vinCode
+                },
+                dataType: 'jsonp',
+                jsonpCallback: 'jsonpCallback',
+                success: function(data) {
+                    handler(data); // data 已经是 object 对象了
+                }
+            })
         }
-        xhr.open('get','alertdata.json',true);
-        xhr.send(null);
-        xhr.onload = hanlder;*/
-        var vinCode = window.parent.document.getElementById("vin").value;
-        $.ajax({
-            type: 'get',
-            async: false,
-            cache: false,
-            url: 'http://10.14.131.7/GuobiaoTest/servlet/GetAlert',
-            data: {
-                vin: vinCode
-            },
-            dataType: 'jsonp',
-            jsopnCallback: 'jsonpCallback',
-            success: function(data) {
-                handler(data); // data 已经是 object 对象了
-            }
-        })
-    }
+    , 30000)
+
     function handler(data) {
         // 对应id获取data数据里面对应的数据项
         document.getElementById('a501').innerHTML = data.a01;
@@ -131,9 +124,9 @@
         document.getElementById('a519').innerHTML = data.a19;
 
         // 1秒后再次请求
-        setInterval(function() {
+        /*setInterval(function() {
             alertData();
-        },100000);
+        },30000);*/
     }
 </script>
 </body>

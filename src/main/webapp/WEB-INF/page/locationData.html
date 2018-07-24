@@ -31,33 +31,33 @@
     </table>
 </div>
 <script type="text/javascript">
-    locate();
-    function locate() {
+   // locate();
+    window.onload = setInterval(function locate() {
         var vinCode = window.parent.document.getElementById("vin").value;
         $.ajax({
             type: 'get',
             async: false,
             cache: false,
-            url: 'http://10.14.131.7/GuobiaoTest/servlet/GetLocation',
+            url: 'http://119.23.75.214/GuobiaoTest/servlet/GetLocation',
             data: {
                 vin: vinCode
             },
             dataType: 'jsonp',
-            jsopnCallback: 'jsonpCallback',
+            jsonpCallback: 'jsonpCallback',
             success: function(data) {
                 handler(data); // data 已经是 object 对象了
             }
         })
-    };
+    },30000);
     function handler(data) {
         // 对应id获取data数据里面对应的数据项
-        document.getElementById('l01').innerHTML = data.l01;
-        document.getElementById('l02').innerHTML = data.l02;
-        document.getElementById('l03').innerHTML = data.l03;
+        document.getElementById('l01').innerHTML = data.a01;
+        document.getElementById('l02').innerHTML = data.a02;
+        document.getElementById('l03').innerHTML = data.a03;
         // 1秒后再次请求
-        setInterval(function() {
+        /*setInterval(function() {
             locate();
-        },100000);
+        },30000);*/
     }
 
 </script>
