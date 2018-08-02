@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>远程升级</title>
+    <link rel="stylesheet" href="/resources/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/resources/css/bootstrap-select.min.css"/>
+    <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resources/js/bootstrap-select.js"></script>
+    <script type="text/javascript" src="/resources/js/bootstrap.min.js"></script>
+</head>
+<body>
+<form action="" method="post" enctype="multipart/form-data">
+    <div class="alert alert-info">
+        <label>烧写文件：</label>
+        <input type="text" id="filePath" name="filePath" style="width:400px;height:31px"/>
+        <button type="button" id="btn_open" class="btn btn-primary" style="height:35px" onclick="openDialog()">打开</button>
+
+            <button type="button" id="btn_upload" class="btn btn-primary" style="height:35px" onclick="upload()">上传</button>
+
+        <button type="button" id="btn_update" class="btn btn-primary" style="height:35px" onclick="update()">升级</button>
+    </div>
+    <div style="margin-top:-20px">
+        <textarea style="width:100%;height:300px" id="history_text">
+        历史记录....
+        </textarea>
+
+
+    </div>
+</form>
+    <script type="text/javascript">
+        // 日期转换格式
+        function formateDate() {
+            var date = new Date();
+            var seperator1 = "-";
+            var seperator2 = ":";
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            if (hour >= 0 && hour <= 9) {
+                hour = "0" + hour;
+            }
+            if (minute >= 0 && minute <= 9) {
+                minute = "0" + minute;
+            }
+            if (second >= 0 && second <= 9) {
+                second = "0" + second;
+            }
+            var current_date = date.getFullYear() + seperator1 + month + seperator1 + strDate + " " + hour +
+                seperator2 + minute + seperator2 + second;
+            return current_date;
+
+        }
+
+        // 打开文件框
+        function openDialog() {
+           var current_time = formateDate();
+           document.getElementById('btn_open').disabled = true;
+            $.ajax({
+                type: 'get',
+                async: false,
+                url: '/map/selectFile',
+                cache: false,
+                dataType: 'text',
+                success: function(data) {
+                    console.log(data);
+                    if (data == "fail") {
+                        alert("未选择文件")
+                    } else {
+                        document.getElementById("filePath").value = data;
+                        document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + "已选择烧写文件";
+                        document.getElementById('btn_open').disabled = false;
+                    }
+                },
+                error: function(data) {
+                    alert("服务器未响应");
+                }
+            })
+        }
+
+        // 上传文件
+        function upload() {
+            var file_Path = $('#filePath').val();
+            var current_time = formateDate();
+            console.log("上传文件");
+            document.getElementById('btn_upload').disabled = true;
+            $.ajax({
+                type: 'get',
+                async: false,
+                cache: false,
+                dataType: 'text',
+                url: '/map/upload',
+                data: {
+                    filePath: file_Path
+                },
+                success: function(data) {
+                    if (data == "success") {
+                        document.getElementById('history_text').innerHTML += "\n" + current_time + ":文件上传成功";
+                        document.getElementById('btn_upload').disabled = false;
+                    }
+                },
+                error: function(data) {
+                    alert("服务器未响应");
+                }
+            })
+        }
+
+        // 升级按钮响应事件
+        function update() {
+            console.log("123");
+        }
+
+    </script>
+</body>
+</html>

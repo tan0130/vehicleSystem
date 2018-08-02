@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>远程控制</title>
+    <link rel="stylesheet" href="/resources/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/resources/css/bootstrap-select.min.css"/>
+    <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resources/js/bootstrap-select.js"></script>
+    <script type="text/javascript" src="/resources/js/bootstrap.min.js"></script>
+
+    <style type="text/css">
+        .input_style {
+            width: 120px;
+            height:33px;
+            border-radius: 4px;
+        }
+    </style>
+
+</head>
+<body>
+    <!-- 车架号输入框 -->
+    <div class="alert alert-info">
+        <div>
+            指令：<select id="light_command" class="selectpicker" title="请选择命令">
+                <option value="AAAA登入">登入</option>
+                <option value="AACC登出">登出</option>
+                <option value="AADD报警">报警</option>
+                <option value="AAEE补发">补发</option>
+                <option value="AAFF软件版本">软件版本</option>
+                <option value="AAGG硬件版本">硬件版本</option>
+                <option value="AAIISD卡初始化">SD初始化</option>
+                <option value="AAEE终端重启">终端重启</option>
+            </select>
+            <!--<label>命令：</label>-->
+            <!--<input type="text" id="command_code" name="command_code" style="width:140px;height:32px;border-radius: 4px"/>-->
+
+
+            <button type="button" id = "btn1" class="btn btn-primary" onclick="sendCommand()" style="height:35px">发送</button>
+            <button type="button" class="btn btn-primary" onclick="" style="height:35px">保存</button>
+            <button type="button" class="btn btn-primary" onclick="clearHistoryText()" style="height:35px">重置</button>
+
+        </div>
+    </div>
+    <div style="margin-top:-20px">
+        <textarea style="width:100%;height:300px" id="history_text">
+        历史记录....
+        </textarea>
+
+
+    </div>
+
+    <script type="text/javascript">
+
+
+
+        // 日期格式转换
+        function formateDate() {
+            var date = new Date();
+            var seperator1 = "-";
+            var seperator2 = ":";
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            if (hour >= 0 && hour <= 9) {
+                hour = "0" + hour;
+            }
+            if (minute >= 0 && minute <= 9) {
+                minute = "0" + minute;
+            }
+            if (second >= 0 && second <= 9) {
+                second = "0" + second;
+            }
+            var current_date = date.getFullYear() + seperator1 + month + seperator1 + strDate + " " + hour +
+                    seperator2 + minute + seperator2 + second;
+            return current_date;
+
+        }
+
+
+        // 发送指令
+        function sendCommand() {
+            var vin_code = window.parent.document.getElementById("vin").value;
+            var command_code = $('#light_command').val().substring(4);
+            if (command_code == "") {
+                alert("请选择指令");
+            } else {
+                var current_time = formateDate();
+                document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + command_code + " 指令已发送";
+                // 在服务器未返回数据前，按钮处于禁用状态
+                document.getElementById('btn1').disabled = true;
+                $.ajax({
+                    type: 'get',
+                    async: false,
+                    cache: false,
+                    url: '/map/sendCommandCode',
+                    dataType: 'text',
+                    // jsonpCallback: 'jsonpCallback',
+                    // data: {
+                    //     vin_code: vin_code,
+                    //     command_code: command_code
+                    // },
+                    success: function(data) {
+                        // console.log("data" + data);
+                        if (data == "success") {
+                            document.getElementById('history_text').innerHTML +=  "\n" + current_time + ":" + command_code + " 指令已成功执行";
+                            document.getElementById('btn1').disabled = false;
+                        }
+                    },
+                    error: function(data) {
+
+                    }
+                })
+            }
+
+
+
+        }
+
+        // 保存历史记录
+        function saveHistoryText() {
+           var history_text = $('#history_text').val();
+           var current_time = formateDate();
+           // console.log("保存历史记录")
+           $.ajax({
+               type: 'get',
+               async: false,
+               cache: false,
+               url: '/map/saveHistoryText',
+               dataType: 'text',
+               data: {
+                   historyText: history_text
+               },
+               success: function(data) {
+                   if (data == "success") {
+                       document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + "历史记录保存成功";
+                   }
+               },
+               error: function(data) {
+                   alert("服务器未响应");
+               }
+           })
+        }
+
+        // 清空历史记录
+        function clearHistoryText() {
+            document.getElementById('history_text').innerHTML = "";
+        }
+
+    </script>
+</body>
+</html>

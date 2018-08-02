@@ -28,7 +28,7 @@
                 <div  style="margin-left:35%">
                     车架号：
                     <input type="text" id="vin"  style="width:20%;height:30px" placeholder="请输入车架号">
-                    <button type="button" class="btn btn-primary" style="margin-left:4px" onclick="watchData()">监控</button>
+                    <!--<button type="button" class="btn btn-primary" style="margin-left:4px" onclick="watchData()">监控</button>-->
                     <span id="currentTime" style="float:right"></span>
                 </div>
                     <!--<form class="bs-example bs-example-form" role="form">
@@ -73,15 +73,12 @@
                 <li>
                     <a href="#panel-statedata" data-toggle="tab">状态数据</a>
                 </li>
-                <!--<li>
-                    <a href="#panel-voltagedata" data-toggle="tab">电压数据</a>
+                <li>
+                    <a href="#panel-remotecontrol" data-toggle="tab">远程控制</a>
                 </li>
                 <li>
-                    <a href="#panel-temperaturedata" data-toggle="tab">温度数据</a>
-                </li>-->
-                <!--<li>
-                     <a href="#panel-searchdata" data-toggle="tab">报文查询</a>
-                </li>-->
+                     <a href="#panel-remoteupdate" data-toggle="tab">远程升级</a>
+                </li>
             </ul>
             <div class="tab-content">
                 <!--整车数据-->
@@ -126,19 +123,19 @@
                     </div>
                 </div>
 
-                <!-- 电压数据 -->
-                <!--<div class="tab-pane" id="panel-voltagedata">
+                <!-- 远程控制 -->
+                <div class="tab-pane" id="panel-remotecontrol">
                     <div>
-                        <iframe id="voltage" name="iframe1" src="/map/toVoltagePage" width="100%" height="550px" scrolling="no" frameborder="0"></iframe>
+                        <iframe id="voltage" name="iframe1" src="/map/toControlPage" width="100%" height="550px" scrolling="no" frameborder="0"></iframe>
                     </div>
-                </div>-->
+                </div>
 
-                <!-- 温度数据 -->
-                <!--<div class="tab-pane" id="panel-temperaturedata">
+                <!-- 远程升级 -->
+                <div class="tab-pane" id="panel-remoteupdate">
                     <div>
-                        <iframe id="temperature" name="iframe1" src="/map/toTemperaturePage" width="100%" height="550px" scrolling="no" frameborder="0"></iframe>
+                        <iframe id="temperature" name="iframe1" src="/map/toUpdatePage" width="100%" height="550px" scrolling="no" frameborder="0"></iframe>
                     </div>
-                </div>-->
+                </div>
             </div>
         </div>
     </div>
