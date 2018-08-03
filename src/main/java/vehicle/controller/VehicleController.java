@@ -148,65 +148,59 @@ public class VehicleController {
     }
 
     // 打开文件选择框
-    @RequestMapping(value = "/selectFile")
-    @ResponseBody
-    public String selectFile() {
-        System.out.print("选择文件");
-        File file = null;
-        String filePath = null;
-        try {
-
-            JFileChooser jfileChooser = new JFileChooser();
-            jfileChooser.setMultiSelectionEnabled(false); // 不支持多选
-            //jfileChooser.setFileSelectionMode(JFileChooser.SAVE_DIALOG | JFileChooser.DIRECTORIES_ONLY);
-            jfileChooser.setDialogTitle("选择目标文件");
-            if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                file = jfileChooser.getSelectedFile();
-                filePath = file.getPath();
-            } else {
-                return "fail";
-            }
-            System.out.print("文件路径为：" + filePath);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return filePath;
-    }
+//    @RequestMapping(value = "/selectFile")
+//    @ResponseBody
+//    public String selectFile() {
+//        System.out.print("选择文件");
+//        File file = null;
+//        String filePath = null;
+//        try {
+//
+//            JFileChooser jfileChooser = new JFileChooser();
+//            jfileChooser.setMultiSelectionEnabled(false); // 不支持多选
+//            //jfileChooser.setFileSelectionMode(JFileChooser.SAVE_DIALOG | JFileChooser.DIRECTORIES_ONLY);
+//            jfileChooser.setDialogTitle("选择目标文件");
+//            if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+//                file = jfileChooser.getSelectedFile();
+//                filePath = file.getPath();
+//            } else {
+//                return "fail";
+//            }
+//            System.out.print("文件路径为：" + filePath);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return filePath;
+//    }
 
     // 上传文件
     @RequestMapping(value = "/upload")
     @ResponseBody
-    public String uploadFile(String filePath, HttpServletRequest request, MultipartFile multipartFile) {
-        System.out.print("上传文件");
-        try {
-            // 将当前上下文初始化给 CommonsMultipartResolver (多部分解析器)
-            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
-                    request.getSession().getServletContext());
-            // 检查 form 中是否有 enctype="multipart/form-data"
-            if (multipartResolver.isMultipart(request)) {
-                // 将 request 变成多部分 request
-                MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
-                // 获取 multiRequest 中所有的文件名
-                Iterator iter = multipartHttpServletRequest.getFileNames();
-//                while (iter.hasNext()) {
-//                    // 一次遍历所有文件
-                   // MultipartFile multipartFile = multipartHttpServletRequest.getFile(filePath);
-//                }
-                //File file = new File(filePath);
-                String path = "D:/vehicleUpload" + multipartFile.getOriginalFilename();
-                File file = new File(path);
-                // 上传
-                multipartFile.transferTo(file);
-                return "success";
+    public String upload(HttpServletRequest request, String description,
+                         MultipartFile file) throws Exception {
+
+        System.out.println("上传文件");
+        //如果文件不为空，写入上传路径
+        if (!file.isEmpty()) {
+            //上传文件路径
+            String path = request.getServletContext().getRealPath("/img/");
+            //上传文件名
+            String filename = file.getOriginalFilename();
+            File filepath = new File(path, filename);
+            //判断路径是否存在，如果不存在就创建一个
+            if (!filepath.getParentFile().exists()) {
+                filepath.getParentFile().mkdirs();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            //将上传文件保存到一个目标文件当中
+            file.transferTo(new File(path + File.separator + filename));
+            return "success";
+        } else {
+            return "error";
         }
-        return "fail";
     }
 
-    // 报文信息查询
+        // 报文信息查询
     /*@RequestMapping(value = "/searchData", produces = "application/json; charset=utf-8", method = RequestMethod.GET)
     @ResponseBody
     public String searchData(String vin) {

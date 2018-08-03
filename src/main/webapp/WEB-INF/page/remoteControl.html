@@ -19,9 +19,12 @@
 
 </head>
 <body>
-    <!-- 车架号输入框 -->
+    <!-- 操作框-->
     <div class="alert alert-info">
         <div>
+            <!-- 车架号输入框 -->
+            <label>车架号</label>
+            <input type="text" id="remote_vin" name="remote_vin" style="width:180px;height:31px"/>
             指令：<select id="light_command" class="selectpicker" title="请选择命令">
                 <option value="AAAA登入">登入</option>
                 <option value="AACC登出">登出</option>
@@ -88,9 +91,17 @@
 
         // 发送指令
         function sendCommand() {
-            var vin_code = window.parent.document.getElementById("vin").value;
+            //var vin_code = window.parent.document.getElementById("vin").value;
             var command_code = $('#light_command').val().substring(4);
-            if (command_code == "") {
+            var remote_vin = $('#remote_vin').val();
+
+            // 正则表达式验证车架号输入的合法性
+            var reg = "^[A-Z][A-Z0-9]{16}";
+            if(remote_vin == "") {
+                alert("车架号不能为空");
+            } else if(!remote_vin.match(reg)) {
+                alert("请输入合法的车架号")
+            } else if (command_code == "") {
                 alert("请选择指令");
             } else {
                 var current_time = formateDate();
@@ -129,7 +140,7 @@
         function saveHistoryText() {
            var history_text = $('#history_text').val();
            var current_time = formateDate();
-           // console.log("保存历史记录")
+           console.log("保存历史记录")
            $.ajax({
                type: 'get',
                async: false,
