@@ -42,15 +42,16 @@
 <!--添加搜索框，通过车架号来查询车辆位置，并显示车辆状态信息-->
 <div class="alert alert-info">
     <div style="margin-top:5px">
-        <label>车架号：</label>
-        <input type="text" id="vin"/>
-        <input type="button" value="查找" onclick="queryOneVehicle()" placeholder="请输入正确车架号"/>
-        <label>车辆总数：</label>
-        <input type="text" id="totalNum" style="width:80px" readonly="true"/>
-        <label>在线：</label>
-        <input type="text" id="onLineNum" style="width:80px" readonly="true"/>
-        <label>离线：</label>
-        <input type="text" id="offLineNum" style="width:80px" readonly="true"/>
+        车架号:
+        <input type="text" id="vin" style="width:160px;height:33px;border-radius: 3px" placeholder="请输入正确车架号"/>
+        <!--<input type="button" value="查找" onclick="queryOneVehicle()" placeholder="请输入正确车架号"/>-->
+        <button type="button" class="btn btn-primary" style="height:33px" onclick="queryOneVehicle()">查询</button>
+        车辆总数:
+        <input type="text" id="totalNum" style="width:80px;height:33px;border-radius: 3px" readonly="true"/>
+        在线:
+        <input type="text" id="onLineNum" style="width:80px;height:33px;border-radius: 3px" readonly="true"/>
+        离线:
+        <input type="text" id="offLineNum" style="width:80px;height:33px;border-radius: 3px" readonly="true"/>
     </div>
 </div>
 <!--百度地图容器-->
@@ -69,14 +70,14 @@
         {vin:"LA95C86H9G1LC0006",state:"离线",longitude:114.326686,latitude:22.683645},
         {vin:"LA95C86H9G1LC0007",state:"离线",longitude:114.316686,latitude:22.683645},
         {vin:"LA95C86H9G1LC0008",state:"离线",longitude:114.306667,latitude:22.683645}];*/
-   /* var data = {"total":5,"rows":[{vin:"LA95C86H9G1LC0001",state:"离线",longitude:114.376667,latitude:22.683645},
+    var data = {"total":5,"rows":[{vin:"LA95C86H9G1LC0001",state:"离线",longitude:114.376667,latitude:22.683645},
         {vin:"LA95C86H9G1LC0002",state:"离线",longitude:114.366667,latitude:22.683645},
         {vin:"LA95C86H9G1LC0003",state:"在线",longitude:114.356686,latitude:22.683645},
         {vin:"LA95C86H9G1LC0004",state:"在线",longitude:114.346686,latitude:22.683645},
         {vin:"LA95C86H9G1LC0005",state:"在线",longitude:114.336686,latitude:22.683645},
         {vin:"LA95C86H9G1LC0006",state:"离线",longitude:114.326686,latitude:22.683645},
         {vin:"LA95C86H9G1LC0007",state:"离线",longitude:114.316686,latitude:22.683645},
-        {vin:"LA95C86H9G1LC0008",state:"离线",longitude:114.306667,latitude:22.683645}]};*/
+        {vin:"LA95C86H9G1LC0008",state:"离线",longitude:114.306667,latitude:22.683645}]};
 
 
     var map;
@@ -94,8 +95,8 @@
         //addMapOverlay(); // 向地图添加覆盖物
         clear(); // 清空输入框的信息
         //requestData(); // 从服务器请求数据，并相应的操作
-        queryAllVehicles(); // 部署项目前测试函数
-        //handlerAll(data); // test
+       // queryAllVehicles(); // 部署项目前测试函数
+        handlerAll(data); // test
     }<!--end function initMap-->
 
     // 创建地图
@@ -197,20 +198,28 @@
 
     function queryOneVehicle() {
         var vinCode = $('#vin').val();
-        $.ajax({
-            type: 'get',
-            async: false,
-            cache: false,
-            url: 'http://119.23.75.214/GuobiaoTest/servlet/GetMap',
-            data: {
-                vin: vinCode
-            },
-            dataType: 'jsonp',
-            jsonpCallback: 'jsonpCallback',
-            success: function(data) {
-                handlerOne(data); // data 已经是 object 对象了
-            }
-        })
+        var reg = "^[A-Z][A-Z0-9]{16}";
+        var regtime = "^[1-9]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\\s+(20|21|22|23|[0-1]\\d):[0-5]\\d:[0-5]\\d$";
+        if(vinCode == "") {
+            alert("车架号不能为空");
+        } else if(!vinCode.match(reg)) {
+            alert("请输入合法的车架号");
+        } else {
+            $.ajax({
+                type: 'get',
+                async: false,
+                cache: false,
+                url: 'http://119.23.75.214/GuobiaoTest/servlet/GetMap',
+                data: {
+                    vin: vinCode
+                },
+                dataType: 'jsonp',
+                jsonpCallback: 'jsonpCallback',
+                success: function(data) {
+                    handlerOne(data); // data 已经是 object 对象了
+                }
+            })
+        }
     }
 
 

@@ -23,9 +23,9 @@
     <div class="alert alert-info">
         <div>
             <!-- 车架号输入框 -->
-            <label>车架号</label>
-            <input type="text" id="remote_vin" name="remote_vin" style="width:180px;height:31px"/>
-            指令：<select id="light_command" class="selectpicker" title="请选择命令">
+            车架号:
+            <input type="text" id="remote_vin" name="remote_vin" style="width:160px;height:31px" placeholder="请输入车架号"/>
+            指令：<select id="light_command" style="width:100px" class="selectpicker" title="请选择命令">
                 <option value="AAAA登入">登入</option>
                 <option value="AACC登出">登出</option>
                 <option value="AADD报警">报警</option>
@@ -40,7 +40,7 @@
 
 
             <button type="button" id = "btn1" class="btn btn-primary" onclick="sendCommand()" style="height:35px">发送</button>
-            <button type="button" class="btn btn-primary" onclick="" style="height:35px">保存</button>
+            <button type="button" class="btn btn-primary" onclick="saveHistoryText()" style="height:35px">保存</button>
             <button type="button" class="btn btn-primary" onclick="clearHistoryText()" style="height:35px">重置</button>
 
         </div>
@@ -54,9 +54,6 @@
     </div>
 
     <script type="text/javascript">
-
-
-
         // 日期格式转换
         function formateDate() {
             var date = new Date();
@@ -105,9 +102,9 @@
                 alert("请选择指令");
             } else {
                 var current_time = formateDate();
-                document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + command_code + " 指令已发送";
                 // 在服务器未返回数据前，按钮处于禁用状态
                 document.getElementById('btn1').disabled = true;
+                document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + command_code + " 指令已发送";
                 $.ajax({
                     type: 'get',
                     async: false,
@@ -127,20 +124,17 @@
                         }
                     },
                     error: function(data) {
-
+                        document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + "服务器未响应，请联系系统管理员";
+                        document.getElementById('btn1').disabled = false;
                     }
                 })
             }
-
-
-
         }
 
         // 保存历史记录
         function saveHistoryText() {
            var history_text = $('#history_text').val();
            var current_time = formateDate();
-           console.log("保存历史记录")
            $.ajax({
                type: 'get',
                async: false,
@@ -153,10 +147,12 @@
                success: function(data) {
                    if (data == "success") {
                        document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + "历史记录保存成功";
+                   } else {
+                       document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + "历史记录保存失败";
                    }
                },
                error: function(data) {
-                   alert("服务器未响应");
+                   document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + "服务器未响应，请联系系统管理员";
                }
            })
         }

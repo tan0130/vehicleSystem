@@ -13,19 +13,47 @@
     <script type="text/javascript" src="/resources/js/bootstrap.min.js"></script>
 </head>
 <body>
-<!--<form action="" method="post" enctype="multipart/form-data">-->
+<form  method="post" enctype="multipart/form-data">
     <div class="alert alert-info">
-        <input type="file" id="upload_file" style="width:200px" name="upload_file" class="file"/>
-        <!--<label>烧写文件：</label>-->
-        <!--<input type="text" id="filePath" name="filePath" style="width:400px;height:31px"/>-->
-        <!--<button type="button" id="btn_open" class="btn btn-primary" style="height:35px" onclick="openDialog()">打开</button>-->
+        <div style="width:1000px">
+            车架号:<input type="text" style="width:160px;height:33px" id="vin" placeholder="请输入车架号"/>
+            指令:<select id="update_command" style="width:100px" class="selectpicker" title="请选择命令">
+                <option value="AAAA远程升级">登入</option>
+                <option value="AAFF软件版本">软件版本</option>
+                <option value="AAGG硬件版本">硬件版本</option>
+                <option value="AAEE终端重启">终端重启</option>
+             </select>
+            <button type="button" class="btn btn-primary" id="btn_upload" data-toggle="modal" data-target="#myModal">上传</button>
+            <button type="button" class="btn btn-primary" id="btn_update" onclick="remoteUpdate()">升级</button>
+            <button type="button" class="btn btn-primary" id="btn_save" onclick="saveHistoryText()">保存</button>
+            <button type="button" class="btn btn-primary" id="btn_reset" onclick="clearHistoryText()">重置</button>
+        </div>
 
-            <!--<button type="button" id="btn_upload" class="btn btn-primary" style="height:35px" onclick="upload()">上传</button>-->
-
-        <!--<button type="button" id="btn_update" class="btn btn-primary" style="height:35px" onclick="update()">升级</button>-->
-        <!--<label>请选择文件夹</label>-->
-        <!--<input type="file" id="upload_file"/>-->
-        <!--<input type="week"/>-->
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            上传烧写文件
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="file" id="upload_file" name="upload_file" class="file"/>
+                    </div>
+                    <!--<div class="modal-footer">-->
+                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭-->
+                        <!--</button>-->
+                        <!--<button type="button" class="btn btn-primary">-->
+                            <!--提交更改-->
+                        <!--</button>-->
+                    <!--</div>-->
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
     </div>
     <div style="margin-top:-20px">
         <textarea style="width:100%;height:300px" id="history_text">
@@ -34,32 +62,8 @@
 
 
     </div>
-<!--</form>-->
+</form>
     <script type="text/javascript">
-        // 上传文件控件,初始化设置
-        $('#upload_file').fileinput({
-            language: 'zh', // 设置语言
-            uploadUrl: '/img', // 上传地址
-            allowdFileExtensions:[], // 接收文件的后缀
-            uploadAsync: true, // 默认异步上传
-            maxFileCount: 1, // 最大上传文件数
-            showPreview: false, // 是否显示预览
-            showRemove: true, // 是否显示删除按钮
-            browseClass: 'btn btn-primary', // 按钮样式
-            showUpload: true, // 是否显示上传按钮
-            enctype: 'multipart/form-data'
-            //showCancle: true, // 是否显示取消上传按钮
-        })
-
-        // 导入文件上传完成之后的事件
-        $('#upload_file').on("fileuploaded",function (event,data,previewId,index) {
-            var current_time = formateDate();
-            console.log("上传文件成功");
-            if (data == "success") {
-                document.getElementById('history_text').innerHTML += "\n" + current_time + ":烧写文件上传成功";
-            }
-        })
-
 
         // 日期转换格式
         function formateDate() {
@@ -92,63 +96,112 @@
 
         }
 
-        // 打开文件框
-        function openDialog() {
-           var current_time = formateDate();
-           document.getElementById('btn_open').disabled = true;
-            $.ajax({
-                type: 'get',
-                async: false,
-                url: '/map/selectFile',
-                cache: false,
-                dataType: 'text',
-                success: function(data) {
-                    console.log(data);
-                    if (data == "fail") {
-                        alert("未选择文件")
-                    } else {
-                        document.getElementById("filePath").value = data;
-                        document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + "已选择烧写文件";
-                        document.getElementById('btn_open').disabled = false;
+        // fileinput 文件上传控件初始化
+        $('#upload_file').fileinput({
+            language: 'zh', // 设置语言
+            uploadUrl: '/map/upload', // 上传地址
+            allowdFileExtensions:[], // 接收文件的后缀
+            dropZoneEnabled: true, // 是否显示拖拽区域
+            uploadAsync: true, // 默认异步上传
+            maxFileCount: 1, // 最大上传文件数
+            showPreview: true, // 是否显示预览
+            showRemove: false, // 不显示删除按钮
+            browseClass: 'btn btn-primary', // 按钮样式
+            showUpload: false, // 是否显示上传按钮
+            enctype: 'multipart/form-data'
+            //showCancle: true, // 是否显示取消上传按钮
+        }).on("fileuploaded",function (event,data) { // 异步上传成功回调函数只有返回是json个数的数据才能触发
+            var current_time = formateDate();
+           var value = data.response.result;
+            //var value = $.parseJSON(data);
+            if (value == "success") {
+                document.getElementById('history_text').innerHTML += "\n" + current_time + ":烧写文件上传成功";
+            }
+            // else {
+            //     document.getElementById('history_text').innerHTML += "\n" + current_time + ":烧写文件上传失败";
+            // };
+        }).on('fileerror', function(event, data, msg) { // 异步上传失败回调函数
+            var current_time = formateDate();
+            var value = data.response.result;
+            if (value == "error") {
+                document.getElementById('history_text').innerHTML += "\n" + current_time + ":烧写文件上传失败";
+            }
+        });
+
+        // 升级按钮响应事件
+        function remoteUpdate() {
+            // 获取车架号
+            var update_vin = $('#vin').val();
+            // 获取当前时间
+            var current_time = formateDate();
+            // 获取指令
+            var update_command = $('#update_command').val().substring(4);
+            // 正则表达式验证车架号输入的合法性
+            var reg = "^[A-Z][A-Z0-9]{16}";
+            if(update_vin == "") {
+                alert("车架号不能为空");
+            } else if(!update_vin.match(reg)) {
+                alert("请输入合法的车架号");
+            } else if (update_command == "") {
+                alert("请选择操作指令");
+            } else {
+                // 禁用按钮
+                document.getElementById('btn_update').disabled = true;
+                document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + update_command + " 指令已发送";
+                $.ajax({
+                    type: 'get',
+                    async: false,
+                    cache: false,
+                    url: '/map/remoteUpdate',
+                    dataType: 'text',
+                    success: function(data) {
+                        if (data == "success") {
+                            document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + update_command + " 指令已执行成功";
+                            document.getElementById('btn_update').disabled = false;
+                        } else {
+                            document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + update_command + " 指令已执行失败";
+                            document.getElementById('btn_update').disabled = true;
+                        }
+                    },
+                    error: function(data) {
+                        document.getElementById('history_text').innerHTML += "\n" + current_time + ":与服务器交互失败，请联系管理员";
+                        document.getElementById('btn_update').disabled = true;
                     }
-                },
-                error: function(data) {
-                    alert("服务器未响应");
-                }
-            })
+                })
+            }
         }
 
-        // 上传文件
-        function upload() {
-            var file_Path = $('#filePath').val();
+        // 保存历史记录
+        function saveHistoryText() {
+            var history_text = $('#history_text').val();
             var current_time = formateDate();
-            console.log("上传文件");
-            document.getElementById('btn_upload').disabled = true;
             $.ajax({
                 type: 'get',
                 async: false,
                 cache: false,
+                url: '/map/saveHistoryText',
                 dataType: 'text',
-                url: '/map/upload',
                 data: {
-                    filePath: file_Path
+                    historyText: history_text
                 },
                 success: function(data) {
                     if (data == "success") {
-                        document.getElementById('history_text').innerHTML += "\n" + current_time + ":文件上传成功";
-                        document.getElementById('btn_upload').disabled = false;
+                        document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + "历史记录保存成功";
+                    } else {
+                        document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + "历史记录保存失败";
                     }
                 },
                 error: function(data) {
-                    alert("服务器未响应");
+                    document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + "服务器未响应，请联系系统管理员";
                 }
             })
         }
 
-        // 升级按钮响应事件
-        function update() {
-            console.log("123");
+        // 清空历史记录
+        function clearHistoryText() {
+            document.getElementById('history_text').innerHTML = "";
         }
+
 
     </script>
 </body>

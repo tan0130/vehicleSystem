@@ -2,6 +2,7 @@ package vehicle.controller;
 
 
 //import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.stage.FileChooser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -122,7 +124,9 @@ public class VehicleController {
     @RequestMapping(value = "/saveHistoryText")
     @ResponseBody
     public String saveHistoryText(String historyText) {
-        System.out.print("保存记录");
+        // 获取当前系统时间
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
+        String current_time = df.format(new Date());
         try {
             JFileChooser jfileChooser = new JFileChooser();
             jfileChooser.setMultiSelectionEnabled(false); // 不支持多选
@@ -131,10 +135,9 @@ public class VehicleController {
             if (jfileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                 File file = jfileChooser.getSelectedFile();
                 String filePath = file.getPath();
-                PrintWriter printWriter = new PrintWriter(filePath + "\\" +  new Date().getTime() + "-history_text.txt");
+                PrintWriter printWriter = new PrintWriter(filePath + "\\" + current_time + "history_text.txt");
                 printWriter.println(historyText);
                 printWriter.close();
-
             } else {
                 return "fail";
             }
@@ -147,58 +150,52 @@ public class VehicleController {
 
     }
 
-    // 打开文件选择框
-//    @RequestMapping(value = "/selectFile")
-//    @ResponseBody
-//    public String selectFile() {
-//        System.out.print("选择文件");
-//        File file = null;
-//        String filePath = null;
-//        try {
-//
-//            JFileChooser jfileChooser = new JFileChooser();
-//            jfileChooser.setMultiSelectionEnabled(false); // 不支持多选
-//            //jfileChooser.setFileSelectionMode(JFileChooser.SAVE_DIALOG | JFileChooser.DIRECTORIES_ONLY);
-//            jfileChooser.setDialogTitle("选择目标文件");
-//            if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-//                file = jfileChooser.getSelectedFile();
-//                filePath = file.getPath();
-//            } else {
-//                return "fail";
-//            }
-//            System.out.print("文件路径为：" + filePath);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return filePath;
-//    }
-
     // 上传文件
     @RequestMapping(value = "/upload")
     @ResponseBody
-    public String upload(HttpServletRequest request, String description,
-                         MultipartFile file) throws Exception {
-
-        System.out.println("上传文件");
-        //如果文件不为空，写入上传路径
-        if (!file.isEmpty()) {
+    public String upload(HttpServletRequest request, MultipartFile upload_file) throws Exception {
+        String json = null;
+        Map<String, String> map = new HashMap<>();
+        System.out.println("upload_file:" + upload_file);
+        ObjectMapper mapper = new ObjectMapper();
+        if(!upload_file.isEmpty()) {
             //上传文件路径
             String path = request.getServletContext().getRealPath("/img/");
             //上传文件名
-            String filename = file.getOriginalFilename();
-            File filepath = new File(path, filename);
+            String filename = upload_file.getOriginalFilename();
+            File filepath = new File(path,filename);
             //判断路径是否存在，如果不存在就创建一个
             if (!filepath.getParentFile().exists()) {
                 filepath.getParentFile().mkdirs();
             }
             //将上传文件保存到一个目标文件当中
-            file.transferTo(new File(path + File.separator + filename));
-            return "success";
+            upload_file.transferTo(new File(path + File.separator + filename));
+            //System.out.print("文件上传成功");
+
+            map.put("result", "success");
+            json = mapper.writeValueAsString(map);
+           // System.out.println("返回json 数据为：" + json);
+            return json;
         } else {
-            return "error";
+            map.put("result","fail");
+            json = mapper.writeValueAsString(map);
+            return json;
         }
     }
+
+    @RequestMapping(value = "/remoteUpdate")
+    @ResponseBody
+    public String remoteUpdate() {
+        try {
+            Thread.currentThread().sleep(5000);
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            //return "error";
+        }
+        return "fail";
+    }
+
 
         // 报文信息查询
     /*@RequestMapping(value = "/searchData", produces = "application/json; charset=utf-8", method = RequestMethod.GET)

@@ -27,22 +27,21 @@
         <div class="alert alert-info">
             <div id="toolbar">
                 <!--添加搜索框-->
-                <form class="form-inline" role="form">
-                    <div class="form-group">
+                <!--<form class="form-inline" role="form">-->
+                    <div>
                         <!--<span class="input-group-addon">车架号</span>-->
                         <label for="vin">车架号:</label>
-                        <input type="text" class="form-control" style="width:75%" id="vin" placeholder="请输入车架号">
-                    </div>
-                    <div class="form-group">
+                        <input type="text"  style="width:160px;height:35px;border-radius:3px" id="vin" placeholder="请输入车架号">
+
                         <label for="starttime">开始日期:</label>
                         <input type="text" class="form-control" id="starttime" placeholder="请输入开始日期">
-                    </div>
-                    <div class="form-group">
+
                         <label for="endtime">结束日期:</label>
-                        <input type="text" class="time-input form-control" id="endtime" placeholder="请输入结束日期">
-                    </div>
+                        <input type="text" class="form-control" id="endtime" placeholder="请输入结束日期">
+
                     <button type="button" class="btn btn-primary" onclick="query()">搜索</button>
-                </form>
+                    </div>
+                <!--</form>-->
             </div><!--end toolbar-->
         </div><!--end alert info-->
         <div style="margin-top:-25px">
