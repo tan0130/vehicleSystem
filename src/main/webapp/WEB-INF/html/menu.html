@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="/resources/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/resources/css/toastr.css"/>
     <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resources/js/toastr.js"></script>
     <script type="text/javascript" src="/resources/js/bootstrap.min.js"></script>
     <style type="text/css">
         html{
@@ -21,30 +23,19 @@
 <!--添加标题-->
 <!--<div class="container">-->
 <div class="alert alert-info">
-    <div class="row clearfix">
-        <div class="col-md-12 column">
+
             <div>
-                <form class="bs-example bs-example-form" role="form">
-                <div  style="margin-left:35%">
-                    车架号：
-                    <input type="text" id="vin"  style="width:160px;height:33px;border-radius: 3px" placeholder="请输入车架号">
-                    <button type="button" class="btn btn-primary" style="margin-left:4px" onclick="watchData()">监控</button>
-                    <span id="currentTime" style="float:right"></span>
+                <form class="form-inline" role="form">
+                <div  class="form-group" style="margin-left:35%">
+                    <label>车架号：</label>
+                    <input type="text" id="vin"  class="form-control" placeholder="请输入车架号">
+                    <button type="button" class="btn btn-primary" onclick="watchData()">监控</button>
+
                 </div>
-                    <!--<form class="bs-example bs-example-form" role="form">
-
-                        <div class="input-group" style="margin-left:35%">
-                            <span class="input-group-addon">车架号</span>
-                            <input type="text" class="form-control" style="width:25%" placeholder="请输入车架号">
-                            <span><button type="button" class="btn btn-primary" style="margin-left:2%" onclick="watchData()">监控</button></span>
-                            <span id="currentTime" style="margin-top:2%;float:right"></span>
-                        </div>
-
-                    </form>-->
+                    <span id="currentTime" style="float:right"></span>
                 </form>
             </div>
-        </div>
-    </div>
+
 </div>
 <!--</div>-->
 
@@ -123,6 +114,24 @@
 </div>
 <!--</div>-->
 <script type="text/javascript">
+
+    // 自定义 toastr 参数
+    toastr.options = {
+        closeButton: false,                                            // 是否显示关闭按钮，（提示框右上角关闭按钮）
+        debug: false,                                                    // 是否使用deBug模式
+        progressBar: true,                                            // 是否显示进度条，（设置关闭的超时时间进度条）
+        positionClass: "toast-top-center",              // 设置提示款显示的位置
+        onclick: null,                                                     // 点击消息框自定义事件
+        showDuration: "300",                                      // 显示动画的时间
+        hideDuration: "1000",                                     //  消失的动画时间
+        timeOut: "2000",                                             //  自动关闭超时时间
+        extendedTimeOut: "1000",                             //  加长展示时间
+        showEasing: "swing",                                     //  显示时的动画缓冲方式
+        hideEasing: "linear",                                       //   消失时的动画缓冲方式
+        showMethod: "fadeIn",                                   //   显示时的动画方式
+        hideMethod: "fadeOut"                                   //   消失时的动画方式
+    };
+
     document.getElementById("vin").value = "";
 
     // 用于验证车架号的合法性
@@ -131,9 +140,11 @@
         // 正则表达式验证车架号输入的合法性
         var reg = "^[A-Z][A-Z0-9]{16}";
         if(vin == "") {
-            alert("车架号不能为空");
+            toastr.warning('请输入车架号','warning');
+            //alert("车架号不能为空");
         } else if(!vin.match(reg)) {
-            alert("请输入合法的车架号")
+           // alert("请输入合法的车架号")
+            toastr.warning('请输入合法的车架号','warning');
         }
     }<!--end function watchData()-->
 

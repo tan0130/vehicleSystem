@@ -6,29 +6,34 @@
     <link rel="stylesheet" href="/resources/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/resources/css/bootstrap-select.min.css"/>
     <link rel="stylesheet" href="/resources/css/bootstrap-fileinput.min.css"/>
+    <link rel="stylesheet" href="/resources/css/toastr.css"/>
     <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
     <script type="text/javascript" src="/resources/js/bootstrap-select.js"></script>
     <script type="text/javascript" src="/resources/js/bootstrap-fileinput.min.js"></script>
     <script type="text/javascript" src="/resources/js/zh.js"></script>
     <script type="text/javascript" src="/resources/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/resources/js/toastr.js"></script>
 </head>
 <body>
-<form  method="post" enctype="multipart/form-data">
     <div class="alert alert-info">
-        <div style="width:1000px">
-            车架号:<input type="text" style="width:160px;height:33px" id="vin" placeholder="请输入车架号"/>
-            指令:<select id="update_command" style="width:100px" class="selectpicker" title="请选择命令">
+        <form class="form-inline" role="form">
+            <div class="form-group">
+                <label>车架号:</label>
+                <input type="text" class="form-control" id="vin" placeholder="请输入车架号"/>
+            </div>
+
+            <label>指令:</label>
+            <select id="update_command" class="selectpicker" title="请选择命令">
                 <option value="AAAA远程升级">登入</option>
                 <option value="AAFF软件版本">软件版本</option>
                 <option value="AAGG硬件版本">硬件版本</option>
                 <option value="AAEE终端重启">终端重启</option>
-             </select>
+            </select>
             <button type="button" class="btn btn-primary" id="btn_upload" data-toggle="modal" data-target="#myModal">上传</button>
             <button type="button" class="btn btn-primary" id="btn_update" onclick="remoteUpdate()">升级</button>
             <button type="button" class="btn btn-primary" id="btn_save" onclick="saveHistoryText()">保存</button>
             <button type="button" class="btn btn-primary" id="btn_reset" onclick="clearHistoryText()">重置</button>
-        </div>
-
+        </form>
         <!-- 模态框（Modal） -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -44,13 +49,6 @@
                     <div class="modal-body">
                         <input type="file" id="upload_file" name="upload_file" class="file"/>
                     </div>
-                    <!--<div class="modal-footer">-->
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭-->
-                        <!--</button>-->
-                        <!--<button type="button" class="btn btn-primary">-->
-                            <!--提交更改-->
-                        <!--</button>-->
-                    <!--</div>-->
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
@@ -59,11 +57,25 @@
         <textarea style="width:100%;height:300px" id="history_text">
         历史记录....
         </textarea>
-
-
     </div>
-</form>
     <script type="text/javascript">
+        // 自定义 toastr 参数
+        toastr.options = {
+            closeButton: false,                                            // 是否显示关闭按钮，（提示框右上角关闭按钮）
+            debug: false,                                                    // 是否使用deBug模式
+            progressBar: true,                                            // 是否显示进度条，（设置关闭的超时时间进度条）
+            positionClass: "toast-top-center",              // 设置提示款显示的位置
+            onclick: null,                                                     // 点击消息框自定义事件
+            showDuration: "300",                                      // 显示动画的时间
+            hideDuration: "1000",                                     //  消失的动画时间
+            timeOut: "2000",                                             //  自动关闭超时时间
+            extendedTimeOut: "1000",                             //  加长展示时间
+            showEasing: "swing",                                     //  显示时的动画缓冲方式
+            hideEasing: "linear",                                       //   消失时的动画缓冲方式
+            showMethod: "fadeIn",                                   //   显示时的动画方式
+            hideMethod: "fadeOut"                                   //   消失时的动画方式
+        };
+
 
         // 日期转换格式
         function formateDate() {
@@ -116,6 +128,7 @@
             //var value = $.parseJSON(data);
             if (value == "success") {
                 document.getElementById('history_text').innerHTML += "\n" + current_time + ":烧写文件上传成功";
+                toastr.success('烧写文件上传成功','success');
             }
             // else {
             //     document.getElementById('history_text').innerHTML += "\n" + current_time + ":烧写文件上传失败";
@@ -125,6 +138,7 @@
             var value = data.response.result;
             if (value == "error") {
                 document.getElementById('history_text').innerHTML += "\n" + current_time + ":烧写文件上传失败";
+                toastr.error('烧写文件上传失败','error');
             }
         });
 
@@ -139,11 +153,14 @@
             // 正则表达式验证车架号输入的合法性
             var reg = "^[A-Z][A-Z0-9]{16}";
             if(update_vin == "") {
-                alert("车架号不能为空");
+                //alert("车架号不能为空");
+                toastr.warning('请输入车架号','warning');
             } else if(!update_vin.match(reg)) {
-                alert("请输入合法的车架号");
+               // alert("请输入合法的车架号");
+                toastr.warning('请输入合法的车架号','warning');
             } else if (update_command == "") {
-                alert("请选择操作指令");
+               // alert("请选择操作指令");
+                toastr.warning('请选择操作指令','warning');
             } else {
                 // 禁用按钮
                 document.getElementById('btn_update').disabled = true;
@@ -158,14 +175,17 @@
                         if (data == "success") {
                             document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + update_command + " 指令已执行成功";
                             document.getElementById('btn_update').disabled = false;
+                            toastr.success('发送指令已执行成功','success');
                         } else {
                             document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + update_command + " 指令已执行失败";
                             document.getElementById('btn_update').disabled = true;
+                            toastr.error('发送指令执行失败','error');
                         }
                     },
                     error: function(data) {
                         document.getElementById('history_text').innerHTML += "\n" + current_time + ":与服务器交互失败，请联系管理员";
                         document.getElementById('btn_update').disabled = true;
+                        toastr.error('与服务器交互失败，请联系管理员','error');
                     }
                 })
             }
@@ -187,12 +207,15 @@
                 success: function(data) {
                     if (data == "success") {
                         document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + "历史记录保存成功";
+                        toastr.success('历史记录保存成功','success');
                     } else {
                         document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + "历史记录保存失败";
+                        toastr.error('历史记录保存失败','error');
                     }
                 },
                 error: function(data) {
                     document.getElementById('history_text').innerHTML += "\n" + current_time + ":" + "服务器未响应，请联系系统管理员";
+                    toastr.error('服务器未响应，请联系系统管理员','error');
                 }
             })
         }
